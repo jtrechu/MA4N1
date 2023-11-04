@@ -22,6 +22,6 @@ Below is a list of tasks that need to be tackled. Mark tasks with `:hourglass_fl
     * Show that the interior of a triangle is non-empty
     * Define what it means to split up a triangle
     * Show that the sum of the inner triangles sum to the outer triangle
-    * Show that at least one number is greater than or equal to the average of four numbers
+    * Show that at least one number is greater than or equal to the average of four numbers ✅ (Jaime)
     * Show there exists a limit of nested closed sets
     * Show that the distance between two points in a triangle is less than the perimeter
