@@ -6,9 +6,9 @@ Below is a list of tasks that need to be tackled. Mark tasks with `:hourglass_fl
 * Definitions/Imports
 * Define complex functions as $f(x)+ig(y)$ where $f$ and $g$ are real functions (or show they are equivalent to all functions $\omega: \mathbb{C} \rightarrow \mathbb{C}$)
 * Consider the notion of "length" and how this relates to complex numbers
-* Complex derivatives (could potentially define holomorphism)
+* Complex derivatives (could potentially define holomorphism) ⏳ (Jaime)
 * Complex (path) integrals
-    * Define complex (path) integrals
+    * Define complex (path) integrals ⏳ (Jaime)
     * Show additivity over the function AND over the path
     * Show the Fundamental Theorem of Calculus for complex (path) integrals 
     * The following proof is significantly better/easier than the one in the notes (complex Cauchy-Schwartz): https://math.stackexchange.com/a4764147
@@ -22,6 +22,6 @@ Below is a list of tasks that need to be tackled. Mark tasks with `:hourglass_fl
     * Show that the interior of a triangle is non-empty
     * Define what it means to split up a triangle
     * Show that the sum of the inner triangles sum to the outer triangle
-    * Show that at least one number is greater than or equal to the average of four numbers
+    * Show that at least one number is greater than or equal to the average of four numbers ✅ (Jaime)
     * Show there exists a limit of nested closed sets
     * Show that the distance between two points in a triangle is less than the perimeter
