@@ -54,12 +54,23 @@ noncomputable def aux (x y : ℂ ) (f : ℂ → ℂ) (γ : Path x y) : ℝ  → 
 noncomputable def pathIntegral1 (x y : ℂ ) (f : ℂ → ℂ) (γ : Path x y) : ℂ := -- consider implicit
 ∫t in (Set.Icc 0 1), (aux x y f γ) t
 
-lemma pathIntAdd (x y : ℂ ) (f g : ℂ → ℂ) (γ : Path x y) :
-(pathIntegral1 x y f γ) + (pathIntegral1 x y g γ) = (pathIntegral1 x y (f+g) γ) := by
+open Set
+open Nat Real MeasureTheory Set Filter Function intervalIntegral Interval
+
+lemma pathIntAdd (x y : ℂ ) (f g : ℂ → ℂ) (γ : Path x y) 
+(haux₁: IntervalIntegrable (aux x y f γ) volume 0 1) --Discuss with Damiano what should we prove based in which hypothesis
+(haux₂: IntervalIntegrable (aux x y g γ) volume 0 1): 
+(pathIntegral1 x y f γ) + (pathIntegral1 x y g γ) = (pathIntegral1 x y (f+g) γ) := by 
 unfold pathIntegral1
+rw[← intervalIntegral.integral_add]
 unfold aux
-simp only [Pi.mul_apply, Function.comp_apply,Pi.add_apply]
-sorry
+have : ∀ x ∈ (Set.uIcc 0 1), (f ∘ Path.extend γ * deriv (Path.extend γ)) x + (g ∘ Path.extend γ * deriv (Path.extend γ)) x = ((f + g) ∘ Path.extend γ * deriv (Path.extend γ)) x := by
+  intro x hx
+  simp
+  rw[add_mul]
+rw[integral_congr this]
+· exact haux₁
+· exact haux₂
 
 lemma pathAddInt (x y z : ℂ) (f : ℂ → ℂ) (γ : Path x y) (α : Path y z):
 (pathIntegral1 x y f γ) + (pathIntegral1 y z f α) = (pathIntegral1 x z f (Path.trans γ α)) := by sorry
