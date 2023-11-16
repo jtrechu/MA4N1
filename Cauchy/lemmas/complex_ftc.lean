@@ -45,21 +45,20 @@ lemma aux2 {z w : ℂ} {f : ℂ → ℂ} {γ : Path z w} (hf : DifferentiableAt 
            DifferentiableAt ℂ f ((Path.extend γ) x) := by
   sorry
 
-lemma complex_ftc2 (z w : ℂ) (f : ℂ → ℂ) (γ : Path z w) --  NOT WORKING (YET). THIS USES PATH.EXTEND. NEED TO FIA PROBLEM IN THE LAST REWRITE
+lemma complex_ftc2 (z w : ℂ) (f : ℂ → ℂ) (γ : Path z w)
     (hf_deriv : ∀ x ∈ (Set.uIcc 0 1), DifferentiableAt ℝ (f ∘ (Path.extend γ)) x)
     (hγ_deriv : ∀ x ∈ (Set.uIcc 0 1), DifferentiableAt ℝ (Path.extend γ) x)
     (h_int : IntervalIntegrable (deriv (f ∘ (Path.extend γ))) volume 0 1) :
     pathIntegral1 z w (deriv f) γ = (f ∘ (Path.extend γ)) 1 - (f ∘ (Path.extend γ)) 0 := by
-  unfold pathIntegral1
-  unfold aux
-  simp
-  have : ∀ y ∈ (Set.uIcc 0 1), deriv f ((Path.extend γ) y) * deriv (Path.extend γ) y = deriv (f ∘ (Path.extend γ)) y := by
-    intro y hy
-    rw [deriv.comp]
-    · exact aux2 (hf_deriv y hy)
-    · exact hγ_deriv y hy
-  rw [integral_congr this, integral_deriv_eq_sub hf_deriv h_int]
-  trivial
+    unfold pathIntegral1
+    unfold aux
+    have : ∀ y ∈ (Set.uIcc 0 1),(deriv f ∘ Path.extend γ * deriv (Path.extend γ)) y = deriv (f ∘ (Path.extend γ)) y := by
+      intro y hy
+      rw [deriv.comp]
+      simp
+      · exact aux2 (hf_deriv y hy)
+      · exact hγ_deriv y hy
+    rw [integral_congr this, integral_deriv_eq_sub hf_deriv h_int]
 
 
 theorem no_name (z w : ℂ) (f : ℂ → ℂ) (γ : Path z w)
