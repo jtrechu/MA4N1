@@ -49,13 +49,13 @@ have aux : ℝ → ℂ := λ t => ((Function.comp f  (ComplexPath α β)) t) * (
 end definitions
 
 namespace definitions_usingPaths
+open Set
+open Nat Real MeasureTheory Set Filter Function intervalIntegral Interval
+
 noncomputable def aux (x y : ℂ ) (f : ℂ → ℂ) (γ : Path x y) : ℝ  → ℂ :=
  (Function.comp f (Path.extend γ)) * (deriv (Path.extend γ))
 noncomputable def pathIntegral1 (x y : ℂ ) (f : ℂ → ℂ) (γ : Path x y) : ℂ := -- consider implicit
-∫t in (Set.Icc 0 1), (aux x y f γ) t
-
-open Set
-open Nat Real MeasureTheory Set Filter Function intervalIntegral Interval
+∫t in (0)..(1), (aux x y f γ) t ∂volume
 
 lemma pathIntAdd (x y : ℂ ) (f g : ℂ → ℂ) (γ : Path x y) 
 (haux₁: IntervalIntegrable (aux x y f γ) volume 0 1) --Discuss with Damiano what should we prove based in which hypothesis
