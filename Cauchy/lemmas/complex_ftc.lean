@@ -22,6 +22,9 @@ import Mathlib.MeasureTheory.Integral.SetIntegral
 
 open definitions
 
+noncomputable def pathIntegral1 (x y : ℂ ) (f : ℂ → ℂ) (γ : Path x y) : ℂ :=
+∫t in (0)..(1), (aux x y f γ) t
+
 open Set
 open Nat Real MeasureTheory Set Filter Function intervalIntegral Interval
 lemma aux1 {f : ℂ → ℂ} {γ : ℝ → ℂ} (hf : DifferentiableAt ℝ (f ∘ γ) x) :
