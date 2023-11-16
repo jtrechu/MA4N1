@@ -14,7 +14,7 @@ Below is a list of tasks that need to be tackled. Mark tasks with `:hourglass_fl
     * The following proof is significantly better/easier than the one in the notes (complex Cauchy-Schwartz): https://math.stackexchange.com/a/4764147
         * Borrow the Cauchy-Schwartz inequality for real integrals
         * Borrow the monotonicity of integrals
-* Show that functions with antiderivatives have zero closed path integral (easy, by FTC)
+* Show that functions with antiderivatives have zero closed path integral (easy, by FTC) ⏳ (Juan)
 
 * Proof of Cauchy's Theorem (all subsections are independent):
     * Define triangles :white_check_mark: (Edward)
@@ -25,4 +25,4 @@ Below is a list of tasks that need to be tackled. Mark tasks with `:hourglass_fl
     * Show that the sum of the inner triangles sum to the outer triangle
     * Show that at least one number is greater than or equal to the average of four numbers :white_check_mark: (Jaime)
     * Show there exists a limit of nested closed sets
-    * Show that the distance between two points in a triangle is less than the perimeter
+    * Show that the distance between two points in a triangle is less than the perimeter :white_check_mark: (Edward)
