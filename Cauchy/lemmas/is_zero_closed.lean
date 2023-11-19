@@ -18,7 +18,7 @@ import Mathlib.Data.Set.Intervals.UnorderedInterval
 import Mathlib.MeasureTheory.Integral.SetIntegral
 import Cauchy.definitions.triangle
 import Cauchy.definitions.path_integrals
-import.Cauchy.lemmas.complex_ftc
+import Cauchy.lemmas.complex_ftc
 
 theorem is_zero_closed (z w : ℂ) (f : ℂ → ℂ) (γ : Path z w)
       (hf_deriv : ∀ x ∈ (Set.uIcc 0 1), DifferentiableAt ℝ (f ∘ (Path.extend γ)) x)
