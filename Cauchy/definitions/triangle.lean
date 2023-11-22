@@ -45,4 +45,19 @@ def TriangularBoundary (triangle : Triangle) : Set ℂ :=
     t₁ + t₂ + t₃ = 1 ∧ t₁*t₂*t₃ = 0 ∧
     (z = t₁*triangle.a + t₂*triangle.b + t₃*triangle.c) }
 
+noncomputable def subTriangleA (triangle : Triangle) : Triangle := --definitions added for proof
+  { a := triangle.a                                                --of cauchy's theorem for triangles by Josh
+    b := (subTriangle triangle).a
+    c := (subTriangle triangle).c : Triangle }
+
+noncomputable def subTriangleB (triangle : Triangle) : Triangle :=
+  { a := (subTriangle triangle).a
+    b := triangle.a
+    c := (subTriangle triangle).b : Triangle }
+
+noncomputable def subTriangleC (triangle : Triangle) : Triangle :=
+  { a := (subTriangle triangle).c
+    b := (subTriangle triangle).b
+    c := triangle.b : Triangle }
+
 end definitions
