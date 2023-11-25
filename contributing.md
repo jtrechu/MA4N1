@@ -11,7 +11,8 @@ Below is a list of tasks that need to be tackled. Mark tasks with `:hourglass_fl
     * Define complex (path) integrals
     * Show additivity over the function ✅ (Jaime) AND over the path ⏳ (Jaime)
     * Show the Fundamental Theorem of Calculus for complex (path) integrals :white_check_mark: (Juan)
-    * The following proof is significantly better/easier than the one in the notes (complex Cauchy-Schwartz): https://math.stackexchange.com/a/4764147
+    * The following proof is significantly better/easier than the one in the notes (complex Cauchy-Schwartz): (It is in Mathlib: https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Integral/IntervalIntegral.html#intervalIntegral.norm_integral_le_of_norm_le_const)
+         https://math.stackexchange.com/a/4764147
         * Borrow the Cauchy-Schwartz inequality for real integrals
         * Borrow the monotonicity of integrals
 * Show that functions with antiderivatives have zero closed path integral (easy, by FTC) ✅ (Juan)
