@@ -64,10 +64,3 @@ lemma complex_ftc2 (z w : ℂ) (f : ℂ → ℂ) (γ : Path z w)
     rw [integral_congr this, integral_deriv_eq_sub hf_deriv h_int]
 
 
-theorem no_name (z w : ℂ) (f : ℂ → ℂ) (γ : Path z w)
-      (hf_deriv : ∀ x ∈ (Set.uIcc 0 1), DifferentiableAt ℝ (f ∘ (Path.extend γ)) x)
-      (hγ_deriv : ∀ x ∈ (Set.uIcc 0 1), DifferentiableAt ℝ (Path.extend γ) x)
-      (h_int : IntervalIntegrable (deriv (f ∘ (Path.extend γ))) volume 0 1)
-      (hγ_closed : γ 0 = γ 1) :
-      pathIntegral1 z w f γ = 0 := by
-      sorry
