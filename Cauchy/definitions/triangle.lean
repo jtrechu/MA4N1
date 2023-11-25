@@ -19,9 +19,9 @@ def nonTrivial (triangle : Triangle) : Prop :=
 
 -- unsure about computability, but actually may not be on further reflection
 noncomputable def subTriangle (triangle : Triangle) : Triangle :=
-  { a := 0.5 * (triangle.b + triangle.a)
-    b := 0.5 * (triangle.c + triangle.b)
-    c := 0.5 * (triangle.a + triangle.c) : Triangle }
+  { a := (triangle.b + triangle.a)/2
+    b := (triangle.c + triangle.b)/2
+    c := (triangle.a + triangle.c)/2 : Triangle }
 
 -- unsure about computability, but actually may not be on further reflection
 noncomputable def path (triangle : Triangle) : helpers.ComplexPath triangle.a triangle.a :=
