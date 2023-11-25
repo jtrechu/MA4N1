@@ -5,8 +5,8 @@ Below is a list of tasks that need to be tackled. Mark tasks with `:hourglass_fl
 * Formalisation
 * Definitions/Imports (Jaime⏳)
 * Define complex functions as $f(x, y)+ig(x, y)$ where $f$ and $g$ are real functions (or show they are equivalent to all functions $\omega: \mathbb{C} \rightarrow \mathbb{C}$)
-* Consider the notion of "length" and how this relates to complex numbers ✅ (Juan and Jaime)
-* Complex derivatives (could potentially define holomorphism) ✅ (Juan and Jaime)
+* Consider the notion of "length" and how this relates to complex numbers ✅ (Jaime and Juan)
+* Complex derivatives (could potentially define holomorphism) ✅ (Jaime and Juan)
 * Complex (path) integrals
     * Define complex (path) integrals
     * Show additivity over the function ✅ (Jaime) AND over the path ⏳ (Jaime)
