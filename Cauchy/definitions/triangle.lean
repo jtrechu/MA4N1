@@ -13,9 +13,12 @@ structure Triangle where
   b : ℂ
   c : ℂ
 
+def Trivial (triangle : Triangle) : Prop :=
+  triangle.a = triangle.b ∨
+  ∃ t : ℝ, triangle.a + t * (triangle.b - triangle.a) = triangle.c
+
 def nonTrivial (triangle : Triangle) : Prop :=
-  triangle.a ≠ triangle.b ∧
-  ¬ ∃ t : ℝ, triangle.a + t * (triangle.b - triangle.a) = triangle.c
+  ¬ Trivial triangle
 
 -- unsure about computability, but actually may not be on further reflection
 noncomputable def subTriangle (triangle : Triangle) : Triangle :=
