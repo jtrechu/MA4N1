@@ -34,6 +34,11 @@ noncomputable def lengthOfPath1 (f : ℝ → ℂ) (h: DifferentiableOn ℝ f (Se
  have aux : ℝ → ℝ := λ x => Complex.abs (f x)
  ∫t in (Set.Icc 0 1), aux t
 
+-- We hadn't defined the length of a path using the definition of Path in Mathlib. Maybe it is necessary later
+
+noncomputable def lengthOfPath2 (z w : ℂ) (γ : Path z w) : ℝ := 
+ ‖∫t in (0)..(1), (deriv (Path.extend γ)) t‖
+
 noncomputable def ComplexPath (f g : ℝ → ℝ): ℝ → ℂ := λ x => Complex.mk (f x) (g x)
 
 noncomputable def DerivativePath (f g : ℝ → ℝ) (h: isC1Path f g) : ℝ → ℂ := ComplexPath (deriv f) (deriv g)
