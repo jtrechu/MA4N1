@@ -90,6 +90,7 @@ lemma triangle_is_image_triangle_point_of_triangle_in_r3 {T : Triangle} :
     rw [←eqc] at gtzc
     refine ⟨a, gtza, b, gtzb, c, gtzc, sum, defx.symm⟩
 
+-- proof taken from here https://math.stackexchange.com/questions/3778799/a-triangle-is-a-compact-set
 theorem triangle_compact {T : Triangle} : IsCompact $ TriangularSet T := by
   rw [triangle_is_image_triangle_point_of_triangle_in_r3]
   exact IsCompact.image triangle_in_r3_compact continuous_triangle_point

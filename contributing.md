@@ -13,17 +13,17 @@ Below is a list of tasks that need to be tackled. Mark tasks with `:hourglass_fl
     * Show the Fundamental Theorem of Calculus for complex (path) integrals :white_check_mark: (Juan)
     * The following proof is significantly better/easier than the one in the notes (complex Cauchy-Schwartz): (It is in Mathlib: https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Integral/IntervalIntegral.html#intervalIntegral.norm_integral_le_of_norm_le_const)
          https://math.stackexchange.com/a/4764147
-        * Borrow the Cauchy-Schwartz inequality for real integrals
+        * Borrow the Cauchy-Schwartz inequality for real integrals :white_check_mark: (Mathlib - Edward)
         * Borrow the monotonicity of integrals
 * Show that functions with antiderivatives have zero closed path integral (easy, by FTC) ✅ (Juan)
 
 * Proof of Cauchy's Theorem (all subsections are independent):
     * Define triangles :white_check_mark: (Edward)
         * Can be defined as triplet of points, but realistically is much more useful as 3-set of vectors as there is more structure. Technically 3 colinear points is not a triangle but since it is trivial to show that Cauchy's Theorem holds in this case we will treat it anyway.
-    * Define the set bounded by a triangle :hourglass_flowing_sand: (Edward)
+    * Define the set bounded by a triangle :white_check_mark: (Edward)
     * Show that the interior of a triangle is non-empty :hourglass_flowing_sand: (Juan) (It seems this would not be necessary to prove)
     * Define what it means to split up a triangle
     * Show that the sum of the inner triangles sum to the outer triangle
     * Show that at least one number is greater than or equal to the average of four numbers :white_check_mark: (Jaime)
-    * Show there exists a limit of nested closed sets
+    * Show there exists a limit of nested closed sets :white_check_mark: (Mathlib - Edward)
     * Show that the distance between two points in a triangle is less than the perimeter :white_check_mark: (Edward)
