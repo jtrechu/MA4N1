@@ -14,7 +14,7 @@ Below is a list of tasks that need to be tackled. Mark tasks with `:hourglass_fl
     * The following proof is significantly better/easier than the one in the notes (complex Cauchy-Schwartz): (It is in Mathlib: https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Integral/IntervalIntegral.html#intervalIntegral.norm_integral_le_of_norm_le_const)
          https://math.stackexchange.com/a/4764147
         * Borrow the Cauchy-Schwartz inequality for real integrals :white_check_mark: (Mathlib - Edward)
-        * Borrow the monotonicity of integrals ✅ (Juan)
+        * Borrow the monotonicity of integrals ✅ (Mathlib - Juan)
         * Lean command for the previous result: https://github.com/leanprover-community/mathlib4/blob/8666bd82efec40b8b3a5abca02dc9b24bbdf2652/Mathlib/MeasureTheory/Integral/IntervalIntegral.lean#L1391-L1394
 * Show that functions with antiderivatives have zero closed path integral (easy, by FTC) ✅ (Juan)
 
