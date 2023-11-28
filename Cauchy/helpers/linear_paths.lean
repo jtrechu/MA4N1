@@ -16,5 +16,37 @@ def linear_path_a_b (a b : ℂ) : ComplexPath a b where -- this thing took me li
   source' := by simp
   target' := by simp
 
+lemma simm_linear (a b: ℂ) : Path.symm (linear_path_a_b a b) = (linear_path_a_b b a) := by
+  unfold linear_path_a_b
+  unfold Path.symm
+  aesop
+  funext
+  aesop
+  ring
+
+lemma trans_linear (a b : ℂ) : Path.trans (linear_path_a_b a ((a+b)/2)) ((linear_path_a_b ((a+b)/2)) b) = linear_path_a_b a b := by
+  unfold linear_path_a_b
+  unfold Path.trans
+  aesop
+  funext
+  aesop
+  rw[Path.extend_extends] 
+  aesop
+  ring_nf
+  norm_num
+  have h1: val≤ 2⁻¹ := by trivial
+  have h2: 2*val≤2*2⁻¹ := by nlinarith
+  simp at h2
+  exact⟨left,h2⟩
+  funext
+  aesop
+  rw[Path.extend_extends] 
+  aesop
+  ring_nf
+  norm_num
+  have h3: 2*2⁻¹ ≤ 2*val := by nlinarith
+  simp at h3
+  exact⟨h3,right⟩
+
 
 end helpers
