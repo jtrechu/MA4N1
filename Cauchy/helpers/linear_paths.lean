@@ -24,7 +24,7 @@ lemma simm_linear (a b: ℂ) : Path.symm (linear_path_a_b a b) = (linear_path_a_
   aesop
   ring
 
-lemma trans_linear (a b : ℂ) : Path.trans (linear_path_a_b a ((a+b)/2)) ((linear_path_a_b ((a+b)/2)) b) = linear_path_a_b a b := by
+lemma trans_linear (a b : ℂ) : Path.trans (linear_path_a_b a (0.5*(a+b))) ((linear_path_a_b (0.5*(a+b))) b) = linear_path_a_b a b := by
   unfold linear_path_a_b
   unfold Path.trans
   aesop
