@@ -5,7 +5,6 @@ import Mathlib.Data.Complex.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Analysis.Normed.Field.Basic
-import Cauchy.definitions.triangle
 
 open Set
 open Nat Real MeasureTheory Set Filter Function intervalIntegral Interval
