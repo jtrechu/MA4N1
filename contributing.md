@@ -8,7 +8,7 @@ Below is a list of tasks that need to be tackled. Mark tasks with `:hourglass_fl
 * Consider the notion of "length" and how this relates to complex numbers ✅ (Jaime and Juan)
 * Complex derivatives (could potentially define holomorphism) ✅ (Jaime and Juan)
 * Complex (path) integrals
-    * Define complex (path) integrals
+    * Define complex (path) integrals :white_check_mark: (Jaime)
     * Show additivity over the function ✅ (Jaime) AND over the path ⏳ (Jaime)
     * Show the Fundamental Theorem of Calculus for complex (path) integrals :white_check_mark: (Juan)
     * The following proof is significantly better/easier than the one in the notes (complex Cauchy-Schwartz): (It is in Mathlib: https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Integral/IntervalIntegral.html#intervalIntegral.norm_integral_le_of_norm_le_const)
