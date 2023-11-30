@@ -10,7 +10,6 @@ import Mathlib.Data.Finset.Basic
 namespace definitions
 
 open unitInterval Finset
-
 structure C1Path extends C(ℝ, ℂ) where
   differentiable_toFun : DifferentiableOn ℝ toFun I
 
@@ -24,6 +23,7 @@ instance C1Path.continuousMapClass : ContinuousMapClass C1Path ℝ ℂ where
 
 structure PiecewisePath where
   count : ℕ
-  paths : range count → C1Path
+  paths : Fin count → C1Path
 
-def constructPiecewisePath
+def constructPiecewisePath (array : Array C1Path) : PiecewisePath :=
+  PiecewisePath.mk array.size λ n => array[n]
