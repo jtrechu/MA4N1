@@ -5,22 +5,20 @@ import Mathlib.Data.Complex.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Analysis.Normed.Field.Basic
-import Cauchy.definitions.path
 
 open Set
 open Nat Real MeasureTheory Set Filter Function intervalIntegral Interval
 open unitInterval
-open definitions
 
 namespace definitions
 
-noncomputable def aux (f : ℂ → ℂ) (γ : C1Path) : ℝ  → ℂ :=
- f ∘ γ * deriv γ
+noncomputable def aux {x y : ℂ } (f : ℂ → ℂ) (γ : Path x y) : ℝ  → ℂ :=
+ (Function.comp f (Path.extend γ)) * (deriv (Path.extend γ))
 
-noncomputable def pathIntegral1 (f : ℂ → ℂ) (γ : C1Path) : ℂ :=
-∫t in (0)..(1), (aux f γ) t ∂volume
+noncomputable def pathIntegral1 {x y : ℂ } (f : ℂ → ℂ) (γ : Path x y) : ℂ :=
+∫t in (0)..(1), (aux f γ)  t ∂volume
 
-noncomputable def length (γ : C1Path) : ℝ :=
-∫ t in (0)..(1), Complex.abs (deriv γ t) ∂volume
+noncomputable def length {x y : ℂ } (γ : Path x y) : ℝ :=
+∫ t in (0)..(1), Complex.abs ((deriv (Path.extend γ)) t) ∂volume
 
 end definitions
