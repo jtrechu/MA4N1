@@ -25,3 +25,5 @@ instance C1Path.continuousMapClass : ContinuousMapClass C1Path ℝ ℂ where
 structure PiecewisePath where
   count : ℕ
   paths : range count → C1Path
+
+def constructPiecewisePath
