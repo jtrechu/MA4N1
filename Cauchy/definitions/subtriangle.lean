@@ -17,7 +17,7 @@ structure SubTriangle extends Triangle where
 
 instance : Coe SubTriangle Triangle where coe := SubTriangle.toTriangle
 
-def constructSubtriangle (coveringTriangle : Triangle) (a1 b1 c1 a2 b2 c2 a3 b3 c3 : ℝ)
+def constructSubTriangle (coveringTriangle : Triangle) (a1 b1 c1 a2 b2 c2 a3 b3 c3 : ℝ)
   (hsum1 : a1+b1+c1 = 1 := by ring) (hsum2 : a2+b2+c2 = 1 := by ring) (hsum3 : a3+b3+c3 = 1 := by ring)
   (gtz : a1 ≥ 0 ∧ b1 ≥ 0 ∧ c1 ≥ 0 ∧ a2 ≥ 0 ∧ b2 ≥ 0 ∧ c2 ≥ 0 ∧ a3 ≥ 0 ∧ b3 ≥ 0 ∧ c3 ≥ 0
    := by (repeat' constructor); all_goals {linarith}) : SubTriangle

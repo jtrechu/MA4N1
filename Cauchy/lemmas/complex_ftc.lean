@@ -22,9 +22,6 @@ import Mathlib.MeasureTheory.Integral.SetIntegral
 
 open definitions
 
-noncomputable def pathIntegral1 (x y : ℂ ) (f : ℂ → ℂ) (γ : Path x y) : ℂ :=
-∫t in (0)..(1), (aux x y f γ) t
-
 open Set
 open Nat Real MeasureTheory Set Filter Function intervalIntegral Interval
 lemma aux1 {f : ℂ → ℂ} {γ : ℝ → ℂ} (hf : DifferentiableAt ℝ (f ∘ γ) x) :
@@ -52,7 +49,7 @@ lemma complex_ftc2 (z w : ℂ) (f : ℂ → ℂ) (γ : Path z w)
     (hf_deriv : ∀ x ∈ (Set.uIcc 0 1), DifferentiableAt ℝ (f ∘ (Path.extend γ)) x)
     (hγ_deriv : ∀ x ∈ (Set.uIcc 0 1), DifferentiableAt ℝ (Path.extend γ) x)
     (h_int : IntervalIntegrable (deriv (f ∘ (Path.extend γ))) volume 0 1) :
-    pathIntegral1 z w (deriv f) γ = (f ∘ (Path.extend γ)) 1 - (f ∘ (Path.extend γ)) 0 := by
+    pathIntegral1 (deriv f) γ = (f ∘ (Path.extend γ)) 1 - (f ∘ (Path.extend γ)) 0 := by
     unfold pathIntegral1
     unfold aux
     have : ∀ y ∈ (Set.uIcc 0 1),(deriv f ∘ Path.extend γ * deriv (Path.extend γ)) y = deriv (f ∘ (Path.extend γ)) y := by

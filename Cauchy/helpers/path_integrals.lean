@@ -5,7 +5,9 @@ import Mathlib.Data.Complex.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Analysis.Normed.Field.Basic
+import Mathlib.Analysis.Calculus.Deriv.Comp
 import Cauchy.definitions.path_integrals
+
 
 
 open unitInterval Set
@@ -66,3 +68,13 @@ lemma symm_helper {x y : ℂ} (γ : Path x y) (t: ℝ) (ht: t ∈ I ):
 Path.symm γ ⟨t, by exact ht⟩ = γ ⟨ 1-t, by aesop⟩ := by
 rw[Path.symm_apply]
 aesop
+
+lemma path_extend_product_rule {x y z : ℂ} (γ : Path x y) (α : Path y z) :
+  ∀ t ∈ I,  1/2 * deriv (Path.extend (Path.trans γ α)) (t * (1/2)) =  deriv (Path.extend γ) t := by
+  intro t tI
+  have t := deriv.comp (h := Path.extend (Path.trans γ α)) (h₂ := λ t₁ =>  (1/2) * t₁)
+  have composition : 1/2 * deriv (Path.extend (Path.trans γ α)) (t * (1/2)) = deriv ((λ t₁ => Path.extend (Path.trans γ α) t₁) ∘ λ t₁ =>  (1/2) * t₁) t := by
+
+    rewrite [ ]
+  rewrite [←deriv.comp]
+  sorry
