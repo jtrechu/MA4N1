@@ -10,6 +10,7 @@ import Mathlib.Data.Finset.Basic
 namespace definitions
 
 open unitInterval Finset
+
 structure C1Path extends C(ℝ, ℂ) where
   differentiable_toFun : DifferentiableOn ℝ toFun I
   continuous_deriv_toFun : ContinuousOn (deriv toFun) I
