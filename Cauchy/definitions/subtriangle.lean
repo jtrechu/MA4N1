@@ -32,3 +32,6 @@ def constructSubTriangle (coveringTriangle : Triangle) (a1 b1 c1 a2 b2 c2 a3 b3 
     hb := ⟨a2, b2, c2, a2gtz, b2gtz, c2gtz, hsum2, by simp; ring⟩
     hc := ⟨a3, b3, c3, a3gtz, b3gtz, c3gtz, hsum3, by simp; ring⟩
   }
+
+noncomputable def constructHalfTriangle (coveringTriangle : Triangle) :=
+  constructSubTriangle coveringTriangle (1/2) (1/2) 0 0 (1/2) (1/2) (1/2) 0 (1/2)
