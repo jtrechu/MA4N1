@@ -65,6 +65,12 @@ lemma unit_transform_mem_cover {a b : ℝ} (scale : I) (hs : scale ≠ 0)
   exact (Set.Icc.one_sub_nonneg scale)
   exact le_of_lt ub
 
+lemma reverse_mem_cover {a : ℝ} (x : Set.Ioo (-a) (a+1)) : (1:ℝ) - x ∈ Set.Ioo (-a) (a+1) := by
+  have ⟨x, hx⟩ := x
+  simp only [Set.mem_Ioo] at hx ⊢
+  constructor
+  all_goals linarith
+
 lemma union_bound_bound (a b c d x : ℝ)
   (hbc : c < b) (hbd : b ≤ d) (hac : a < c):
     a < x ∧ x < b ∨ c ≤ x ∧ x ≤ d ↔ a < x ∧ x ≤ d := by

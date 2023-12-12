@@ -43,7 +43,7 @@ lemma unit_scale_invariance (f : ℂ → ℂ) (γ : C1Path) (scale offset : I)
           apply DifferentiableOn.differentiableAt γ.differentiable_toFun
           rewrite [mem_nhds_iff]
           refine ⟨γ.open_cover.interval, ?_⟩
-          have ⟨a, b, defs, gti, lts⟩ := γ.open_cover.interval_apply
+          have ⟨a, defs, gti, lts⟩ := γ.open_cover.interval_apply
           rewrite [defs]
           refine ⟨lts, isOpen_Ioo, ?_⟩
           refine inequalities.unit_transform_mem_cover scale hs ⟨t, ?_⟩ gti offset ho
@@ -111,3 +111,64 @@ theorem split_equality {U : Set ℂ} (f : ℂ → ℂ) (h : DifferentiableOn ℂ
   . exact aux_integrable f h γ hγ
   . rewrite [Set.uIcc_subset_uIcc_iff_mem]
     simp; exact ⟨le_of_lt split.2.1, le_of_lt split.2.2⟩
+
+theorem reverse_pathIntegral_neg (f : ℂ → ℂ) (γ : C1Path) :
+  pathIntegral1' f γ.reverse = -pathIntegral1' f γ := by
+  unfold pathIntegral1' C1Path.reverse aux
+  simp only [Pi.mul_apply, Function.comp_apply]
+  rewrite [integral_restriction]
+  conv_lhs => {
+    arg 1; intro x; arg 1;
+    intro t;
+    rewrite [Set.restrict_apply]
+    conv => {
+      arg 2;
+      conv => {
+        apply deriv.scomp
+        tactic => {
+          apply DifferentiableOn.differentiableAt γ.differentiable_toFun
+          rewrite [mem_nhds_iff]
+          refine ⟨γ.open_cover.interval, ?_⟩
+          have ⟨a, defs, gti, lts⟩ := γ.open_cover.interval_apply
+          rewrite [defs]
+          refine ⟨lts, isOpen_Ioo, ?_⟩
+          refine inequalities.reverse_mem_cover ⟨t, ?_⟩
+          exact Set.mem_of_subset_of_mem gti t.2
+        }
+        tactic => {
+          apply Differentiable.differentiableAt
+          apply Differentiable.add
+          apply differentiable_const
+          apply Differentiable.neg
+          exact differentiable_id'
+        }
+      }
+      arg 1;
+      rewrite [deriv_const_sub]
+      simp only [deriv_id'', mul_one]
+    }
+    simp only [Complex.real_smul]
+    rewrite [mul_rotate']
+    arg 2; arg 2;
+  }
+  conv_lhs => {
+    arg 1; intro x; arg 1; intro t; arg 2;
+    rewrite [←Function.comp_apply (f:=f)]
+    rewrite [←Pi.mul_apply]
+  }
+  simp only [Complex.ofReal_neg, Complex.ofReal_one]
+  have unrestrict :
+  ∫ (x : ℝ) in (0)..(1), function_extension (fun (t : I) => -1 * (deriv γ.toFun * f ∘ γ.toFun) (1 - ↑t)) x =
+  ∫ (x : ℝ) in (0)..(1), -1 * (deriv γ.toFun * f ∘ γ.toFun) (1 - ↑x) := by
+    apply intervalIntegral.integral_congr
+    unfold function_extension Set.EqOn
+    aesop
+
+  rewrite [unrestrict]
+  simp only [intervalIntegral.integral_const_mul]
+  rewrite [intervalIntegral.integral_comp_sub_left]
+  simp only [Pi.mul_apply, Function.comp_apply, sub_self, sub_zero, neg_mul, one_mul, neg_inj]
+  conv in _ * _ => {
+    rewrite [mul_comm]
+  }
+  exact zero_le_one
