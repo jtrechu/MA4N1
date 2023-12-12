@@ -25,27 +25,45 @@ lemma cover_ub_gt {a b c d : ℝ} (h : Set.Icc b c ⊆ Set.Ioo a d) (hh : b ≤ 
   have ⟨_, h⟩ := h hh
   exact h
 
-lemma unit_mul_mem_cover {a b : ℝ} (x : I) (y : Set.Ioo a b) (h : I ⊆ Set.Ioo a b) :
-  x*(y:ℝ) ∈ Set.Ioo a b := by
+lemma bounded_transform_mem_cover {a b : ℝ} (scale : I) (hs : scale ≠ 0) (x : Set.Ioo a b)
+  (h : I ⊆ Set.Ioo a b) (offset : ℝ) (ho : 0 ≤ offset) (hub : offset ≤ b * (1 - scale)) :
+  scale * (x:ℝ) + offset ∈ Set.Ioo a b := by
   unfold Set.Ioo at *
-  simp only [Set.coe_setOf] at y
-  have ⟨y, defy⟩ := y
+  simp only [Set.coe_setOf] at x
+  have ⟨x, defx⟩ := x
   rewrite [Set.mem_def, Set.setOf_app_iff]
   simp only
   have lb := cover_lb_lt h (by linarith)
-  have ub := cover_ub_gt h (by linarith)
-  by_cases y ≥ (0 : ℝ)
+  have slb : scale > 0 := by exact Ne.lt_of_le' hs nonneg'
+  by_cases x ≥ (0 : ℝ)
   . constructor
-    exact lt_of_lt_of_le lb (mul_nonneg unitInterval.nonneg' h)
-    exact lt_of_le_of_lt (mul_le_of_le_one_left h unitInterval.le_one') defy.2
+    apply lt_of_lt_of_le (b:=scale * x)
+    . exact lt_of_lt_of_le lb (mul_nonneg nonneg' h)
+    . exact le_add_of_nonneg_right ho
+    calc scale * x + offset
+      _ < scale * b + offset          := by simp; exact mul_lt_mul_of_pos_left defx.2 slb
+      _ ≤ scale * b + b * (1 - scale) := by linarith
+      _ = b                           := by ring
   . simp only [ge_iff_le, not_le] at h
     constructor
-    refine lt_of_lt_of_le defy.1 (le_mul_of_le_one_left ?_ unitInterval.le_one')
-    apply le_of_lt; exact h;
-    apply lt_of_le_of_lt (mul_nonpos_of_nonneg_of_nonpos ?_ ?_)
-    . apply lt_trans (by linarith) ub
-    . exact unitInterval.nonneg'
-    . apply le_of_lt; exact h;
+    . calc scale * x + offset
+      _ ≥ scale * x := by linarith
+      _ ≥ x         := by exact le_mul_of_le_one_left (le_of_lt h) le_one'
+      _ > a         := by exact defx.1
+    . calc scale * x + offset
+      _ < scale * b + offset          := by simp; exact mul_lt_mul_of_pos_left defx.2 slb
+      _ ≤ scale * b + b * (1 - scale) := by linarith
+      _ = b                           := by ring
+
+lemma unit_transform_mem_cover {a b : ℝ} (scale : I) (hs : scale ≠ 0)
+  (x : Set.Ioo a b) (h : I ⊆ Set.Ioo a b) (offset : I) (hub : offset ≤ (1:ℝ) - scale) :
+  scale * (x:ℝ) + offset ∈ Set.Ioo a b := by
+  have ub := cover_ub_gt h (by norm_num)
+  refine bounded_transform_mem_cover scale hs x h offset nonneg' ?_
+  apply le_trans hub
+  apply le_mul_of_one_le_left
+  exact (Set.Icc.one_sub_nonneg scale)
+  exact le_of_lt ub
 
 lemma union_bound_bound (a b c d x : ℝ)
   (hbc : c < b) (hbd : b ≤ d) (hac : a < c):

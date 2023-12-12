@@ -8,6 +8,7 @@ import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Mul
 import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Topology.Algebra.ConstMulAction
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Topology.ContinuousOn
@@ -19,46 +20,48 @@ namespace definitions
 
 open unitInterval Finset DifferentiableOn definitions helpers
 
-structure C1Path extends C(ℝ, ℂ) where
+structure C1Path where
+  toFun : ℝ → ℂ
   open_cover : UnitIntervalCover
   differentiable_toFun : DifferentiableOn ℝ toFun open_cover
   continuous_deriv_toFun : ContinuousOn (deriv toFun) open_cover
 
--- copied from Mathlib Path (No longer true!)
--- instance C1Path.continuousMapClass : ContinuousMapClass C1Path ℝ ℂ where
---   coe := fun γ ↦ ⇑γ.toContinuousMap
---   coe_injective' := fun γ₁ γ₂ h => by
---     simp only [FunLike.coe_fn_eq] at h
---     cases γ₁; cases γ₂; congr
---   map_continuous := fun γ => by continuity
-
-
 instance : CoeFun (C1Path) fun _ => ℝ → ℂ :=
   ⟨fun p => p.toFun⟩
 
-structure PiecewisePath where
-  count : ℕ
+structure PiecewisePath (count : ℕ) where
   paths : Fin count → C1Path
 
-instance : Coe C1Path PiecewisePath where
-  coe := λ p => {count := 1, paths := λ 0 => p}
+instance : Coe C1Path (PiecewisePath 1) where
+  coe := λ p => {paths := λ 0 => p}
 
-def constructPiecewisePath (array : Array C1Path) : PiecewisePath :=
-  PiecewisePath.mk array.size λ i => array[i]
-
-def PiecewisePath.extend (path1 path2 : PiecewisePath) : PiecewisePath :=
+def PiecewisePath.extend {n m : ℕ} (p : PiecewisePath n) (q : PiecewisePath m) : PiecewisePath (n + m) :=
   {
-    count := path2.count + path1.count
     paths := λ i => by
-      by_cases i < path1.count
-      . exact path1.paths $ Fin.castLT i h
+      by_cases i < n
+      . exact p.paths $ Fin.castLT i h
       . simp only [not_lt] at h
-        exact path2.paths $ Fin.subNat path1.count i h
+        refine q.paths $ Fin.subNat n ⟨i, ?_⟩ h
+        rewrite [add_comm m n]; exact Fin.prop i
   }
 
-def C1Path.scale (path : C1Path) (scale : I) : C1Path := {
+lemma C1Path.differentiableOnI (path : C1Path) : DifferentiableOn ℝ path I := by
+  have ⟨a, b, _, gti, lts⟩ := path.open_cover.interval_apply
+  apply DifferentiableOn.mono path.differentiable_toFun
+  exact subset_trans gti lts
 
-    toFun := λ x => path.toFun $ scale * x
+lemma C1Path.continuousOnI (path : C1Path) : ContinuousOn path I := by
+  exact DifferentiableOn.continuousOn path.differentiableOnI
+
+lemma C1Path.continuousDerivOnI (path : C1Path) : ContinuousOn (deriv path) I := by
+  have ⟨a, b, _, gti, lts⟩ := path.open_cover.interval_apply
+  apply ContinuousOn.mono path.continuous_deriv_toFun
+  exact subset_trans gti lts
+
+def C1Path.transform (path : C1Path) (scale : I) (offset : I) (ho : offset ≤ (1:ℝ) - scale)
+  (hs : scale ≠ 0) : C1Path := {
+
+    toFun := λ x => path.toFun $ scale * x + offset
 
     open_cover := {
       set := path.open_cover.interval
@@ -70,58 +73,59 @@ def C1Path.scale (path : C1Path) (scale : I) : C1Path := {
 
     differentiable_toFun := by
       have ⟨a, b, cdef, gti, lts⟩ := path.open_cover.interval_apply
-      simp; apply DifferentiableOn.comp;
-      . exact path.differentiable_toFun
-      . apply DifferentiableOn.const_mul; exact differentiableOn_id
-      . rw [Set.mapsTo', Set.image, Set.subset_def]
-        intro x h; have ⟨ox, oxi, defx⟩ := h
-        apply Set.mem_of_subset_of_mem lts
-        rw [←defx]
-        rw [cdef] at oxi
-        exact inequalities.unit_mul_mem_cover scale ⟨ox, oxi⟩ gti
-
+      simp; apply DifferentiableOn.comp
+      exact path.differentiable_toFun
+      apply DifferentiableOn.add_const
+      apply DifferentiableOn.const_mul; exact differentiableOn_id
+      rw [Set.mapsTo', Set.image, Set.subset_def]
+      intro x h; have ⟨ox, oxi, defx⟩ := h
+      apply Set.mem_of_subset_of_mem lts
+      rw [←defx]
+      rw [cdef] at oxi
+      exact inequalities.unit_transform_mem_cover scale hs ⟨ox, oxi⟩ gti offset ho
 
     continuous_deriv_toFun := by
       have ⟨a, b, cdef, gti, lts⟩ := path.open_cover.interval_apply
       simp only [ContinuousMap.toFun_eq_coe]
       rewrite [cdef, continuousOn_iff_continuous_restrict]
       conv => {
-        arg 1; intro y;
+        arg 1; intro y
         apply deriv.scomp
         tactic => {
           apply DifferentiableOn.differentiableAt path.differentiable_toFun
           rewrite [mem_nhds_iff]
           refine ⟨Set.Ioo a b, lts, isOpen_Ioo, ?_⟩
-          exact inequalities.unit_mul_mem_cover scale y gti
+          exact inequalities.unit_transform_mem_cover scale hs y gti offset ho
         }
         tactic => {
-          apply Differentiable.differentiableAt;
-          apply Differentiable.const_mul;
+          apply Differentiable.differentiableAt
+          apply Differentiable.add
+          apply Differentiable.const_mul
           exact differentiable_id'
+          apply differentiable_const
           }
       }
       conv in _ • _ => {
           arg 1;
-          rw [deriv_const_mul_field]
+          rw [deriv_add_const, deriv_const_mul_field]
+          simp only [deriv_id'', mul_one, Complex.real_smul]
       }
-      simp only [deriv_id'', mul_one, Complex.real_smul]
       apply Continuous.mul
       exact continuous_const
       rewrite [←Function.comp_def]
       apply ContinuousOn.comp_continuous (s:=Set.Ioo a b)
-      . exact ContinuousOn.mono path.continuous_deriv_toFun lts
-      . apply Continuous.mul
-        exact continuous_const
-        exact continuous_subtype_val
-      . intro x
-        exact inequalities.unit_mul_mem_cover scale x gti
+      exact ContinuousOn.mono path.continuous_deriv_toFun lts
+      any_goals continuity
+      intro x
+      exact inequalities.unit_transform_mem_cover scale hs x gti offset ho
   }
 
-def C1Path.split (path : C1Path) (split : I) : PiecewisePath :=
-  constructPiecewisePath #[
-    path.scale split,
-    path.scale (by
-      refine ⟨1-(split:ℝ), ?_⟩
-      rw [←mem_iff_one_sub_mem]
-      exact Subtype.mem split)
-  ]
+def C1Path.split (path : C1Path) (split : Set.Ioo (0:ℝ) 1) : PiecewisePath 2 := {
+  paths := λ i => (by
+    by_cases i = 0
+    exact (path.transform ⟨split, le_of_lt split.2.1, le_of_lt split.2.2⟩ 0
+    (by simp; exact le_of_lt split.2.2) (ne_of_gt split.2.1))
+    exact (path.transform ⟨1 - split, le_of_lt (Set.Ioo.one_sub_mem split.2).1, le_of_lt (Set.Ioo.one_sub_mem split.2).2⟩
+    ⟨split, le_of_lt split.2.1, le_of_lt split.2.2⟩ (by simp) (ne_of_gt (Set.Ioo.one_sub_mem split.2).1))
+  )
+}
