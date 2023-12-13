@@ -34,27 +34,35 @@ theorem Complex.deriv_coe (x : ℝ) : deriv (λ x => ↑x : ℝ → ℂ) x = 1 :
   exact hasDerivAt_id' x
 
 
-def linearPath (a b : ℂ) : C1Path := {
-  toFun := λ t => (1 - t)*a + t*b
-  open_cover := {
-    set := Set.univ
-    h := ⟨isOpen_univ, Set.subset_univ I⟩
-  }
-  differentiable_toFun := by
-    apply DifferentiableOn.add
-    apply DifferentiableOn.mul_const
-    rewrite [differentiableOn_const_sub_iff]
-    exact Differentiable.differentiableOn Complex.differentiable_coe
-    apply DifferentiableOn.mul_const
-    exact Differentiable.differentiableOn Complex.differentiable_coe
-  continuous_deriv_toFun := by
-    conv => {
-      arg 1; intro x
-      rewrite [deriv_add, deriv_mul_const, deriv_mul_const, deriv_const_sub, Complex.deriv_coe]
-      exact rfl
-      any_goals apply DifferentiableAt.mul_const
-      any_goals apply DifferentiableAt.const_sub
-      all_goals exact Differentiable.differentiableAt Complex.differentiable_coe
+structure LinearPath where
+  head : ℂ
+  tail : ℂ
+
+instance : CoeFun LinearPath fun _ => ℝ → ℂ where
+  coe := λ L => λ t => (1 - t)*L.head + t*L.tail
+
+instance : Coe LinearPath C1Path where
+  coe := λ L => {
+    toFun := λ (t:ℝ) => (1 - t)*L.head + t*L.tail
+    open_cover := {
+      set := Set.univ
+      h := ⟨isOpen_univ, Set.subset_univ I⟩
     }
-    exact continuousOn_const
-}
+    differentiable_toFun := by
+      apply DifferentiableOn.add
+      apply DifferentiableOn.mul_const
+      rewrite [differentiableOn_const_sub_iff]
+      exact Differentiable.differentiableOn Complex.differentiable_coe
+      apply DifferentiableOn.mul_const
+      exact Differentiable.differentiableOn Complex.differentiable_coe
+    continuous_deriv_toFun := by
+      conv => {
+        arg 1; intro x
+        rewrite [deriv_add, deriv_mul_const, deriv_mul_const, deriv_const_sub, Complex.deriv_coe]
+        exact rfl
+        any_goals apply DifferentiableAt.mul_const
+        any_goals apply DifferentiableAt.const_sub
+        all_goals exact Differentiable.differentiableAt Complex.differentiable_coe
+      }
+      exact continuousOn_const
+  }
