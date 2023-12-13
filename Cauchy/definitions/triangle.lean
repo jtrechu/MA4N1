@@ -1,12 +1,11 @@
 import Mathlib.Data.Set.Basic
-import Cauchy.helpers.linear_paths
 import Mathlib.Topology.UnitInterval
 import Mathlib.Tactic
 import Mathlib.Data.Complex.Basic
 
+import Cauchy.definitions.linear_path
+
 namespace definitions
-open helpers
-open unitInterval
 
 structure Triangle where
   a : ℂ
@@ -27,11 +26,14 @@ noncomputable def subTriangle (triangle : Triangle) : Triangle :=
     c := (triangle.a + triangle.c)/2 : Triangle }
 
 -- unsure about computability, but actually may not be on further reflection
-noncomputable def path (triangle : Triangle) : helpers.ComplexPath triangle.a triangle.a :=
-  let p1 := linear_path_a_b triangle.a triangle.b
-  let p2 := linear_path_a_b triangle.b triangle.c
-  let p3 := linear_path_a_b triangle.c triangle.a
-  Path.trans (Path.trans p1 p2) p3
+def path (triangle : Triangle) : PiecewisePath 3 :=
+  {
+    paths := λ i =>
+      match i with
+      | 0 => LinearPath.mk triangle.a triangle.b
+      | 1 => LinearPath.mk triangle.b triangle.c
+      | 2 => LinearPath.mk triangle.c triangle.a
+  }
 
 noncomputable def perimeter (triangle : Triangle) : ℝ :=
   dist triangle.b triangle.a +
@@ -55,12 +57,12 @@ noncomputable def subTriangleA (triangle : Triangle) : Triangle := --definitions
 
 noncomputable def subTriangleB (triangle : Triangle) : Triangle :=
   { a := (subTriangle triangle).a
-    b := triangle.a
+    b := triangle.b
     c := (subTriangle triangle).b : Triangle }
 
 noncomputable def subTriangleC (triangle : Triangle) : Triangle :=
   { a := (subTriangle triangle).c
     b := (subTriangle triangle).b
-    c := triangle.b : Triangle }
+    c := triangle.c : Triangle }
 
 end definitions
