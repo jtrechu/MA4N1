@@ -26,7 +26,7 @@ noncomputable def subTriangle (triangle : Triangle) : Triangle :=
     c := (triangle.a + triangle.c)/2 : Triangle }
 
 -- unsure about computability, but actually may not be on further reflection
-def path (triangle : Triangle) : PiecewisePath 3 :=
+def Triangle.path (triangle : Triangle) : PiecewisePath 3 :=
   {
     paths := λ i =>
       match i with
@@ -34,6 +34,9 @@ def path (triangle : Triangle) : PiecewisePath 3 :=
       | 1 => LinearPath.mk triangle.b triangle.c
       | 2 => LinearPath.mk triangle.c triangle.a
   }
+
+instance : Coe Triangle (PiecewisePath 3) where
+  coe := λ t => t.path
 
 noncomputable def perimeter (triangle : Triangle) : ℝ :=
   dist triangle.b triangle.a +
