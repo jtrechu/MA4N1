@@ -22,8 +22,8 @@ lemma subtriangle_subset (T : Triangle) : (TriangularSet $ subTriangle T) ⊆ Tr
   simp
   ring
 
-lemma subtriangle_subset' (sT : SubTriangle) :
-  TriangularSet sT ⊆ TriangularSet sT.coveringTriangle := by
+lemma subtriangle_subset' {T : Triangle } (sT : SubTriangle T) :
+  TriangularSet sT ⊆ TriangularSet T := by
     have {a := sTa, b := sTb, c := sTc, ha, hb, hc} := sT
     simp at ha hb hc
     unfold TriangularSet at *
@@ -48,7 +48,7 @@ lemma subtriangle_subset' (sT : SubTriangle) :
       repeat rewrite [←left_distrib]
       repeat rewrite [←add_assoc]
       rewrite [stasum, stbsum, stcsum]
-      simp
+      simp only [mul_one]
       rw [add_rotate]
       exact sum
     . simp
