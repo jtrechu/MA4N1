@@ -31,13 +31,13 @@ def constructSubTriangle (coveringTriangle : Triangle) (a1 b1 c1 a2 b2 c2 a3 b3 
   }
 
 noncomputable def subTriangleA (coveringTriangle : Triangle) :=
-  constructSubTriangle coveringTriangle 1 0 0 0 (1/2) (1/2) (1/2) 0 (1/2)
+  constructSubTriangle coveringTriangle 1 0 0 (1/2) (1/2) 0 (1/2) 0 (1/2)
 
 noncomputable def subTriangleB (coveringTriangle : Triangle) :=
-  constructSubTriangle coveringTriangle (1/2) (1/2) 0 0 1 0 (1/2) 0 (1/2)
+  constructSubTriangle coveringTriangle (1/2) (1/2) 0 0 1 0 0 (1/2) (1/2)
 
 noncomputable def subTriangleC (coveringTriangle : Triangle) :=
-  constructSubTriangle coveringTriangle (1/2) (1/2) 0 0 (1/2) (1/2) 0 0 1
+  constructSubTriangle coveringTriangle (1/2) 0 (1/2) 0 (1/2) (1/2) 0 0 1
 
 noncomputable def subTriangleD (coveringTriangle : Triangle) :=
   constructSubTriangle coveringTriangle (1/2) (1/2) 0 0 (1/2) (1/2) (1/2) 0 (1/2)
