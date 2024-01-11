@@ -2,8 +2,22 @@
 
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
+import Cauchy.lemmas.triangle_inequality
 
 namespace lemmas
+
+open lemmas
+
+lemma abs_gt_sum_4 (a b c d sum : ℝ) : a+b+c+d = sum → |a| ≥ |sum|/4 ∨ |b| ≥ |sum|/4
+  ∨ |c| ≥ |sum|/4 ∨ |d| ≥ |sum|/4:= by
+  contrapose
+  repeat rewrite [not_or]
+  repeat rewrite [←lt_iff_not_ge]
+  intro i s
+  apply_fun abs at s
+  have t : |a+b+c+d| ≤ |a|+|b|+|c|+|d| := by
+    repeat apply le_trans (by apply abs_add); simp
+  linarith
 
 lemma mean_leq_max (a b c d : ℝ) : a+b+c+d ≤ 4*max a (max b (max c d)) := by
 have h1 : a ≤ max a (max b (max c d)) := by apply le_max_left
