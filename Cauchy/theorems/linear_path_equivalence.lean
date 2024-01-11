@@ -38,8 +38,8 @@ theorem linear_path_split_tail (γ : LinearPath) (split : Set.Ioo 0 1) :
 
 theorem linear_path_reverse (γ : LinearPath) :
   (C1Path.reverse γ).toFun = LinearPath.mk γ.tail γ.head := by
-    unfold C1Path.reverse
-    simp
-    rewrite [Function.funext_iff]
-    intro a
-    ring
+  unfold C1Path.reverse
+  simp
+  rewrite [Function.funext_iff]
+  intro a
+  ring
