@@ -4,6 +4,7 @@ import Mathlib.Tactic
 import Mathlib.Data.Complex.Basic
 
 import Cauchy.definitions.linear_path
+import Cauchy.definitions.path_integrals
 
 namespace definitions
 
@@ -29,8 +30,7 @@ def Triangle.path (triangle : Triangle) : PiecewisePath 3 :=
       | 2 => LinearPath.mk triangle.c triangle.a
   }
 
-instance : Coe Triangle (PiecewisePath 3) where
-  coe := λ t => t.path
+noncomputable def trianglePathIntegral (f : ℂ → ℂ) (T : Triangle) := pathIntegral1 f T.path
 
 noncomputable def perimeter (triangle : Triangle) : ℝ :=
   dist triangle.b triangle.a +

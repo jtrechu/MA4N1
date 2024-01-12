@@ -8,7 +8,7 @@ namespace lemmas
 
 open lemmas
 
-lemma abs_ge_sum_4 (a b c d sum : ℂ) : a+b+c+d = sum → ‖a‖ ≥ ‖sum‖/4 ∨ ‖b‖ ≥ ‖sum‖/4
+lemma abs_ge_sum_4 {sum : ℂ} (a b c d : ℂ) : a+b+c+d = sum → ‖a‖ ≥ ‖sum‖/4 ∨ ‖b‖ ≥ ‖sum‖/4
   ∨ ‖c‖ ≥ ‖sum‖/4 ∨ ‖d‖ ≥ ‖sum‖/4:= by
   contrapose
   repeat rewrite [not_or]

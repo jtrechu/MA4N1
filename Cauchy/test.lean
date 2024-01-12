@@ -8,3 +8,10 @@ noncomputable def test (index : ℕ ) : ℝ := by
 lemma test2 : test 4 = (1/16) := by
   repeat unfold test
   ring
+
+open Classical
+
+lemma test3 (p q r s : Prop) (h : p ∨ q ∨ r ∨ s) : ℕ := by
+  apply Or.by_cases h
+  exact λp => 1
+  exact λq => 1
