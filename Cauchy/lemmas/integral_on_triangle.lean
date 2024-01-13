@@ -39,3 +39,10 @@ rw[helper1,helper2,helper3,helper4,helper5,helper6,helper7,helper8,helper9,helpe
 rw[helper16,helper17,helper18]
 rw[(helper19 f t h₁ h₂),(helper20 f t h₁ h₂),(helper21 f t h₁ h₂)]
 ring
+
+lemma triangleIntegral' {U : Set ℂ}(f : ℂ → ℂ) (t : Triangle)  (h₁ : DifferentiableOn ℂ f U) (h₂: TriangularBoundary t ⊆ U) :
+trianglePathIntegral f t = trianglePathIntegral f (subTriangleA t) + trianglePathIntegral f (subTriangleB t) + trianglePathIntegral f (subTriangleC t) +trianglePathIntegral f (subTriangleD t)  := by 
+unfold trianglePathIntegral
+apply triangleIntegral
+aesop
+exact h₂
