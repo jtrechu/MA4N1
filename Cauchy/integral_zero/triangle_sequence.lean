@@ -7,6 +7,7 @@ import Cauchy.definitions.triangle
 import Cauchy.definitions.path_integrals
 import Cauchy.lemmas.mean_leq_max
 import Cauchy.definitions.subtriangle
+import Cauchy.lemmas.perim_subtriangle_is_half_triangle
 
 open definitions lemmas Classical
 
@@ -54,3 +55,49 @@ lemma triangleSequence_apply {f : ℂ → ℂ} {T : Triangle} (n : ℕ) :
       Real.rpow_add_one, ge_iff_le, div_mul_eq_div_div]
     exact i
     any_goals linarith
+
+  lemma aux (a:ℝ) (n:ℝ) (h: n≥0): (a/2 ^ ↑n) / 2 = a/2^(↑n+1) := by
+    field_simp
+    rw[mul_comm]
+    have h: (2:ℝ)^(1:ℝ) = (2:ℝ) := by simp
+    nth_rewrite 2 [←h ]
+    rw[←Real.rpow_add']
+    rw[add_comm]
+    simp
+    norm_num
+    linarith
+
+  lemma triangleSequence_perim {f : ℂ → ℂ} {T : Triangle} (n : ℕ) :
+   perimeter (triangleSequence f T n) = perimeter T / 2^n := by
+   induction n with
+   | zero =>
+     unfold triangleSequence
+     simp
+   | succ n ih =>
+     unfold triangleSequence selectSubtriangle
+     rewrite [Or.by_cases]
+     split_ifs with h
+     rw[perim_subtriangleA_is_half_triangle]
+     rw[ih, Nat.succ_eq_add_one ]
+     rw[aux (perimeter T)]
+     aesop
+     exact (Nat.cast_nonneg n)
+     rewrite[Or.by_cases]
+     split_ifs with hp
+     rw[perim_subtriangleB_is_half_triangle]
+     rw[ih, Nat.succ_eq_add_one ]
+     rw[aux (perimeter T)]
+     aesop
+     exact (Nat.cast_nonneg n)
+     rewrite[Or.by_cases]
+     split_ifs with hq
+     rw[perim_subtriangleC_is_half_triangle]
+     rw[ih, Nat.succ_eq_add_one]
+     rw[aux (perimeter T)]
+     aesop
+     exact (Nat.cast_nonneg n)
+     rw[perim_subtriangleD_is_half_triangle]
+     rw[ih, Nat.succ_eq_add_one ]
+     rw[aux (perimeter T)]
+     aesop
+     exact (Nat.cast_nonneg n)
