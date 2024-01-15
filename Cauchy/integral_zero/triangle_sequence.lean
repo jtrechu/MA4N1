@@ -68,36 +68,22 @@ lemma triangleSequence_apply {f : ℂ → ℂ} {T : Triangle} (n : ℕ) :
     linarith
 
   lemma triangleSequence_perim {f : ℂ → ℂ} {T : Triangle} (n : ℕ) :
-   perimeter (triangleSequence f T n) = perimeter T / 2^n := by
-   induction n with
-   | zero =>
-     unfold triangleSequence
-     simp
-   | succ n ih =>
-     unfold triangleSequence selectSubtriangle
-     rewrite [Or.by_cases]
-     split_ifs with h
-     rw[perim_subtriangleA_is_half_triangle]
-     rw[ih, Nat.succ_eq_add_one ]
-     rw[aux (perimeter T)]
-     aesop
-     exact (Nat.cast_nonneg n)
-     rewrite[Or.by_cases]
-     split_ifs with hp
-     rw[perim_subtriangleB_is_half_triangle]
-     rw[ih, Nat.succ_eq_add_one ]
-     rw[aux (perimeter T)]
-     aesop
-     exact (Nat.cast_nonneg n)
-     rewrite[Or.by_cases]
-     split_ifs with hq
-     rw[perim_subtriangleC_is_half_triangle]
-     rw[ih, Nat.succ_eq_add_one]
-     rw[aux (perimeter T)]
-     aesop
-     exact (Nat.cast_nonneg n)
-     rw[perim_subtriangleD_is_half_triangle]
-     rw[ih, Nat.succ_eq_add_one ]
-     rw[aux (perimeter T)]
-     aesop
-     exact (Nat.cast_nonneg n)
+    perimeter (triangleSequence f T n) = perimeter T / 2^n := by
+    induction n with
+    | zero =>
+      unfold triangleSequence
+      simp
+    | succ n ih =>
+      unfold triangleSequence selectSubtriangle
+      repeat'
+        rewrite [Or.by_cases]
+        split_ifs
+      all_goals
+        try rewrite [perim_subtriangleA_is_half_triangle]
+        try rewrite [perim_subtriangleB_is_half_triangle]
+        try rewrite [perim_subtriangleC_is_half_triangle]
+        try rewrite [perim_subtriangleD_is_half_triangle]
+        rw[ih, Nat.succ_eq_add_one ]
+        rw[aux (perimeter T)]
+        aesop
+        exact (Nat.cast_nonneg n)
