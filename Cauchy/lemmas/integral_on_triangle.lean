@@ -29,19 +29,15 @@ import Cauchy.helpers.triangle_integral_helper
 open trianglehelper definitions helpers theorems intervalIntegral unitInterval
 
 lemma triangleIntegral {U : Set ℂ}(f : ℂ → ℂ) (t : Triangle)  (h₁ : DifferentiableOn ℂ f U) (h₂: TriangularBoundary t ⊆ U) :
-pathIntegral1 f t.path = pathIntegral1 f (subTriangleA t).path + pathIntegral1 f (subTriangleB t).path + pathIntegral1 f (subTriangleC t).path +pathIntegral1 f (subTriangleD t).path := by
-rw[PiecewisePath.path_integral_three]
-rw[PiecewisePath.path_integral_three]
-rw[PiecewisePath.path_integral_three]
-rw[PiecewisePath.path_integral_three]
-rw[PiecewisePath.path_integral_three]
-rw[helper1,helper2,helper3,helper4,helper5,helper6,helper7,helper8,helper9,helper10,helper11,helper12,helper13,helper14,helper15]
-rw[helper16,helper17,helper18]
-rw[(helper19 f t h₁ h₂),(helper20 f t h₁ h₂),(helper21 f t h₁ h₂)]
-ring
+  pathIntegral1 f t.path = pathIntegral1 f (subTriangleA t).path + pathIntegral1 f (subTriangleB t).path + pathIntegral1 f (subTriangleC t).path +pathIntegral1 f (subTriangleD t).path := by
+  repeat rewrite[PiecewisePath.path_integral_three]
+  rw[helper1,helper2,helper3,helper4,helper5,helper6,helper7,helper8,helper9,helper10,helper11,helper12,helper13,helper14,helper15]
+  rw[helper16,helper17,helper18]
+  rw[(helper19 f t h₁ h₂),(helper20 f t h₁ h₂),(helper21 f t h₁ h₂)]
+  ring
 
 lemma triangleIntegral' {U : Set ℂ}(f : ℂ → ℂ) (t : Triangle)  (h₁ : DifferentiableOn ℂ f U) (h₂: TriangularBoundary t ⊆ U) :
-trianglePathIntegral f t = trianglePathIntegral f (subTriangleA t) + trianglePathIntegral f (subTriangleB t) + trianglePathIntegral f (subTriangleC t) +trianglePathIntegral f (subTriangleD t)  := by 
+trianglePathIntegral f t = trianglePathIntegral f (subTriangleA t) + trianglePathIntegral f (subTriangleB t) + trianglePathIntegral f (subTriangleC t) +trianglePathIntegral f (subTriangleD t)  := by
 unfold trianglePathIntegral
 apply triangleIntegral
 aesop
