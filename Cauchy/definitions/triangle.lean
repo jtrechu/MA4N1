@@ -42,6 +42,13 @@ def TriangularSet (triangle : Triangle) : Set ℂ :=
     t₁ + t₂ + t₃ = 1 ∧
     (z = t₁*triangle.a + t₂*triangle.b + t₃*triangle.c) }
 
+lemma Triangle.Nonempty (triangle : Triangle) : Set.Nonempty $ TriangularSet triangle := by
+  unfold TriangularSet
+  rewrite [Set.Nonempty]
+  refine ⟨triangle.a, 1, 0, 0, ?_⟩
+  repeat constructor; norm_num
+  simp
+
 def TriangularBoundary (triangle : Triangle) : Set ℂ :=
   {z | ∃ (t₁ t₂ t₃ : ℝ), t₁ ≥ 0 ∧ t₂ ≥ 0 ∧ t₃ ≥ 0 ∧
     t₁ + t₂ + t₃ = 1 ∧ t₁*t₂*t₃ = 0 ∧
