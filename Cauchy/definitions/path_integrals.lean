@@ -17,7 +17,7 @@ open definitions
 namespace definitions
 
 noncomputable def aux (f : ℂ → ℂ) (γ : C1Path) : ℝ → ℂ :=
- f ∘ γ * deriv γ
+  f ∘ γ * deriv γ
 
 noncomputable def pathIntegral1' (f : ℂ → ℂ) (γ : C1Path ) : ℂ :=
   ∫t in (0)..(1), (aux f γ) t ∂volume

@@ -10,15 +10,37 @@ import Mathlib.Algebra.BigOperators.Basic
 
 import Cauchy.definitions.path_integrals
 import Cauchy.definitions.triangle
+import Cauchy.lemmas.path_integral_linearity
 
 import Cauchy.integral_zero._1_triangle_sequence
+import Cauchy.lemmas.triangle_integrals_zero
 
-open definitions
+open definitions lemmas theorems
 
 variable {U : Set ℂ} (f : ℂ → ℂ) (T : Triangle) (hU : IsCDomain U)
   (h₁ : DifferentiableOn ℂ f U) (h₂: TriangularBoundary T ⊆ U)
 
-lemma integral_as_deriv (w : ℂ)
-  (hw : ∀n, w ∈ TriangularSet (triangleSequence f T hU h₁ h₂ n).triangle) :
+lemma integral_as_deriv (w : ℂ) :
   ‖trianglePathIntegral f T‖ = ‖trianglePathIntegral (λz => f z - f w - (z - w)*deriv f w) T‖ := by
-  sorry
+  apply congrArg
+  repeat rewrite [triangleIntegral_subtract hU]
+  rewrite [const_integral_zero T hU]
+  conv_rhs => {
+    arg 2; arg 1; intro z;
+    rewrite [sub_mul]; arg 1;
+    rewrite [mul_comm];
+  }
+  rewrite [triangleIntegral_subtract hU]
+  rewrite [const_mul_integral_zero T hU]
+  rewrite [const_integral_zero T hU]
+  ring
+  any_goals exact h₂
+  any_goals apply DifferentiableOn.const_mul
+  any_goals apply differentiableOn_const
+  any_goals apply DifferentiableOn.mul_const
+  any_goals apply DifferentiableOn.sub_const
+  any_goals exact h₁
+  all_goals exact differentiableOn_id
+
+lemma cauchy_schwartz : ‖trianglePathIntegral f T‖ ≤ ‖trianglePathIntegral (λz => Complex.ofReal' ‖f z‖) T‖ := by
+  rewrite [trianglePathIntegral_apply]
