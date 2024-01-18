@@ -5,6 +5,9 @@ import Mathlib.Data.Complex.Basic
 
 import Cauchy.definitions.linear_path
 import Cauchy.definitions.path_integrals
+import Cauchy.helpers.piecewise_paths
+
+open helpers
 
 namespace definitions
 
@@ -32,6 +35,15 @@ def Triangle.path (triangle : Triangle) : PiecewisePath 3 :=
 
 noncomputable def trianglePathIntegral (f : ℂ → ℂ) (T : Triangle) := pathIntegral1 f T.path
 
+lemma trianglePathIntegral_apply (f : ℂ → ℂ) (T : Triangle) : trianglePathIntegral f T =
+  pathIntegral1' f (LinearPath.mk T.a T.b) +
+  pathIntegral1' f (LinearPath.mk T.b T.c) +
+  pathIntegral1' f (LinearPath.mk T.c T.a) := by
+  unfold trianglePathIntegral
+  rewrite [PiecewisePath.path_integral_three]
+  unfold Triangle.path PiecewisePath.paths
+  aesop
+
 noncomputable def perimeter (triangle : Triangle) : ℝ :=
   dist triangle.b triangle.a +
   dist triangle.c triangle.b +
@@ -42,12 +54,24 @@ def TriangularSet (triangle : Triangle) : Set ℂ :=
     t₁ + t₂ + t₃ = 1 ∧
     (z = t₁*triangle.a + t₂*triangle.b + t₃*triangle.c) }
 
-lemma Triangle.Nonempty (triangle : Triangle) : Set.Nonempty $ TriangularSet triangle := by
+def Triangle.contains_a (T : Triangle) : T.a ∈ TriangularSet T := by
   unfold TriangularSet
+  simp only [ge_iff_le, exists_and_left, Set.mem_setOf_eq]
+  exact ⟨1, zero_le_one, 0, (by exact Eq.le rfl), 0, (by exact Eq.le rfl), by simp, by simp⟩
+
+def Triangle.contains_b (T : Triangle) : T.b ∈ TriangularSet T := by
+  unfold TriangularSet
+  simp only [ge_iff_le, exists_and_left, Set.mem_setOf_eq]
+  exact ⟨0, (by exact Eq.le rfl), 1, zero_le_one, 0, (by exact Eq.le rfl), by simp, by simp⟩
+
+def Triangle.contains_c (T : Triangle) : T.c ∈ TriangularSet T := by
+  unfold TriangularSet
+  simp only [ge_iff_le, exists_and_left, Set.mem_setOf_eq]
+  exact ⟨0, (by exact Eq.le rfl), 0, (by exact Eq.le rfl), 1, zero_le_one, by simp, by simp⟩
+
+lemma Triangle.Nonempty (triangle : Triangle) : Set.Nonempty $ TriangularSet triangle := by
   rewrite [Set.Nonempty]
-  refine ⟨triangle.a, 1, 0, 0, ?_⟩
-  repeat constructor; norm_num
-  simp
+  exact ⟨triangle.a, triangle.contains_a⟩
 
 def TriangularBoundary (triangle : Triangle) : Set ℂ :=
   {z | ∃ (t₁ t₂ t₃ : ℝ), t₁ ≥ 0 ∧ t₂ ≥ 0 ∧ t₃ ≥ 0 ∧

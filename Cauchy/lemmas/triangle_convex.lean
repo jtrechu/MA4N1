@@ -8,6 +8,8 @@ import Cauchy.definitions.linear_path
 
 open definitions unitInterval
 
+namespace lemmas
+
 lemma linear_path_contained (T : Triangle) (a b : ℂ) (ha : a ∈ TriangularSet T)
   (hb : b ∈ TriangularSet T) : (LinearPath.mk a b) '' I ⊆ TriangularSet T := by
   unfold TriangularSet at ha hb ⊢

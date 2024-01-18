@@ -48,11 +48,13 @@ lemma complex_ftc1 {f : ℂ → ℂ} (γ : C1Path)
   rw [integral_congr this, integral_deriv_eq_sub hf_deriv h_int]
   trivial
 
-lemma complex_ftc' {f : ℂ → ℂ} {F : ℂ → ℂ} {U : Set ℂ} {γ : C1Path} (hγ : γ '' I ⊆ U)
-  (hf : DifferentiableOn ℂ f U) (hF : ∀z ∈ U, DifferentiableAt ℂ F z) (hfs : deriv F = f) :
+lemma complex_ftc' {f : ℂ → ℂ} {F : ℂ → ℂ} {U : Set ℂ} {γ : C1Path} (hU : IsOpen U) (hγ : γ '' I ⊆ U)
+  (hf : DifferentiableOn ℂ f U) (hF : DifferentiableOn ℂ F U) (hfs : deriv F = f) :
   pathIntegral1' f γ = F (γ 1) - F (γ 0) := by
   have diff_F (x : I) : DifferentiableAt ℂ F (C1Path.toFun γ ↑x) := by
-    refine hF (γ x) ?_
+    apply DifferentiableOn.differentiableAt hF
+    rewrite[mem_nhds_iff]
+    refine ⟨U, by exact Eq.subset rfl, hU, ?_⟩
     aesop
   have diff_g (x : I) : DifferentiableAt ℝ γ.toFun ↑x := by
     apply DifferentiableOn.differentiableAt γ.differentiable_toFun
