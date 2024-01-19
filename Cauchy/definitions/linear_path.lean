@@ -33,6 +33,14 @@ theorem Complex.deriv_coe (x : ℝ) : deriv (λ x => ↑x : ℝ → ℂ) x = 1 :
   apply HasDerivAt.ofReal_comp
   exact hasDerivAt_id' x
 
+lemma deriv_linear_path {head tail : ℂ} {x : ℝ} :
+  deriv (fun (t:ℝ) => (1 - t) * head + t * tail) x = tail - head := by
+  rewrite [deriv_add, deriv_mul_const, deriv_mul_const, deriv_const_sub, Complex.deriv_coe]
+  ring
+  any_goals apply DifferentiableAt.mul_const
+  any_goals apply DifferentiableAt.const_sub
+  all_goals exact Differentiable.differentiableAt Complex.differentiable_coe
+
 
 structure LinearPath where
   head : ℂ
@@ -58,11 +66,7 @@ instance : Coe LinearPath C1Path where
     continuous_deriv_toFun := by
       conv => {
         arg 1; intro x
-        rewrite [deriv_add, deriv_mul_const, deriv_mul_const, deriv_const_sub, Complex.deriv_coe]
-        exact rfl
-        any_goals apply DifferentiableAt.mul_const
-        any_goals apply DifferentiableAt.const_sub
-        all_goals exact Differentiable.differentiableAt Complex.differentiable_coe
+        rewrite [deriv_linear_path]
       }
       exact continuousOn_const
   }

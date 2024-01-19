@@ -54,7 +54,7 @@ lemma complex_ftc' {f : ℂ → ℂ} {F : ℂ → ℂ} {U : Set ℂ} {γ : C1Pat
   have diff_F (x : I) : DifferentiableAt ℂ F (C1Path.toFun γ ↑x) := by
     apply DifferentiableOn.differentiableAt hF
     rewrite[mem_nhds_iff]
-    refine ⟨U, by exact Eq.subset rfl, hU, ?_⟩
+    refine ⟨U, by rfl, hU, ?_⟩
     aesop
   have diff_g (x : I) : DifferentiableAt ℝ γ.toFun ↑x := by
     apply DifferentiableOn.differentiableAt γ.differentiable_toFun

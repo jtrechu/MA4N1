@@ -41,6 +41,3 @@ lemma integral_as_deriv (w : ℂ) :
   any_goals apply DifferentiableOn.sub_const
   any_goals exact h₁
   all_goals exact differentiableOn_id
-
-lemma cauchy_schwartz : ‖trianglePathIntegral f T‖ ≤ ‖trianglePathIntegral (λz => Complex.ofReal' ‖f z‖) T‖ := by
-  rewrite [trianglePathIntegral_apply]
