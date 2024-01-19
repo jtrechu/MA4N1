@@ -17,11 +17,7 @@ structure Triangle where
   c : ℂ
 
 def Trivial (triangle : Triangle) : Prop :=
-  triangle.a = triangle.b ∨
-  ∃ t : ℝ, triangle.a + t * (triangle.b - triangle.a) = triangle.c
-
-def nonTrivial (triangle : Triangle) : Prop :=
-  ¬ Trivial triangle
+  triangle.a = triangle.b ∧ triangle.b = triangle.c
 
 -- unsure about computability, but actually may not be on further reflection
 def Triangle.path (triangle : Triangle) : PiecewisePath 3 :=
