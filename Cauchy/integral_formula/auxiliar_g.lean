@@ -97,4 +97,7 @@ have hDif:  DifferentiableAt ℂ f z  := by
   unfold IsCDomain at hU
   exact hU.1
   exact hz
+apply DifferentiableAt.hasDerivAt at hDif
+rw[HasDerivAt.deriv hDif]
+rw[hasDerivAt_iff_isLittleO] at hDif
 sorry
