@@ -25,7 +25,8 @@ variable {U : Set ℂ}
 
 noncomputable def g_aux (f : ℂ → ℂ) (z :ℂ) : ℂ → ℂ := fun w => if w == z then deriv f z else (f w - f z)/(w-z)
 
-
+lemma fcont (f:ℂ→ℂ) (hf : DifferentiableOn ℂ f U) : ContinuousOn f U := by
+  apply (DifferentiableOn.continuousOn (hf))
 
 lemma denom_is_differentiable  {z : ℂ} : DifferentiableOn ℂ (fun w => w-z) (U\{z}) := by
 have hconst : DifferentiableOn ℂ (fun _ => -z) (U\{z}) := by exact differentiableOn_const (-z)
@@ -34,6 +35,11 @@ apply DifferentiableOn.add hid hconst
 
 lemma denom_is_continuous {z : ℂ} : ContinuousOn (fun w => w-z) (U\{z}) := by
 apply (DifferentiableOn.continuousOn (denom_is_differentiable))
+
+lemma denom_is_continuous' {z:ℂ} : Continuous (fun w => w-z) := by
+  have hid: Continuous (fun w:ℂ => w)  := by exact continuous_id'
+  have hconst : Continuous (fun _:ℂ => z) := by exact continuous_const
+  apply Continuous.sub hid hconst
 
 lemma hnot0 (z:ℂ): ∀ w ∈ (U\{z}), (fun w => w-z) w ≠ 0 := by
   intro x hx
@@ -62,14 +68,13 @@ apply (DifferentiableOn.div this denom_is_differentiable (hnot0 z))
 lemma g_cont_notz {U: Set ℂ}(f : ℂ → ℂ) (z : ℂ) (hf : DifferentiableOn ℂ f U) :  ContinuousOn (g_aux f z) (U\{z}) :=
 by apply (DifferentiableOn.continuousOn (differentiable_g f z hf))
 
-lemma fcont (f:ℂ→ℂ) (hf : DifferentiableOn ℂ f U) : ContinuousOn f U := by apply (DifferentiableOn.continuousOn (hf))
-
-lemma U_Punctured_Open (hU : IsCDomain U) : IsOpen (U\{z}) := by
-have hU : IsOpen U := by
+lemma UOpen (hU : IsCDomain U) : IsOpen U := by
   unfold IsCDomain at hU
   exact hU.1
+
+lemma U_Punctured_Open (hU : IsCDomain U) : IsOpen (U\{z}) := by
 have hz : IsOpen {z}ᶜ  := by exact isOpen_compl_singleton
-apply IsOpen.inter hU hz
+apply IsOpen.inter (UOpen hU) hz
 
 
 
@@ -83,12 +88,6 @@ apply ContinuousAt.continuousWithinAt
 apply a
 exact h
 have hx : x = z := by simp_all only [not_true, Set.mem_diff, Set.mem_singleton_iff, true_and, not_not]
-rw[Metric.continuousWithinAt_iff]
-have hg : g_aux f z x = deriv f z:= by
-  rw[hx]
-  unfold g_aux
-  simp
-rw[hg]
 rw[hx]
 unfold g_aux
 have hDif:  DifferentiableAt ℂ f z  := by
@@ -99,5 +98,15 @@ have hDif:  DifferentiableAt ℂ f z  := by
   exact hz
 apply DifferentiableAt.hasDerivAt at hDif
 rw[HasDerivAt.deriv hDif]
-rw[hasDerivAt_iff_isLittleO] at hDif
+apply ContinuousWithinAt.tendsto
+rw[hasDerivAt_iff_tendsto] at hDif
+unfold ContinuousWithinAt
+rw[IsOpen.nhdsWithin_eq (UOpen hU) hz]
+have hDif : Filter.Tendsto (fun x' => ‖(x' - z)⁻¹ *(f x' - f z - (x' - z) • deriv f z)‖) (nhds z) (nhds 0) := by aesop
+rw[←tendsto_zero_iff_norm_tendsto_zero] at hDif
+aesop
+have h1 : Filter.Tendsto (fun x' => x'- z) (nhds z) (nhds (z-z)) := by exact (Continuous.tendsto (denom_is_continuous') z)
+norm_num at h1
+have h2 :  Filter.Tendsto (fun x => (x - z) * ((x - z)⁻¹ * (f x - f z - (x - z) * deriv f z))) (nhds z) (nhds (0 * 0)) := by apply Filter.Tendsto.mul h1 hDif
+norm_num at h2
 sorry
