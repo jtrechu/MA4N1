@@ -109,4 +109,14 @@ have h1 : Filter.Tendsto (fun x' => x'- z) (nhds z) (nhds (z-z)) := by exact (Co
 norm_num at h1
 have h2 :  Filter.Tendsto (fun x => (x - z) * ((x - z)⁻¹ * (f x - f z - (x - z) * deriv f z))) (nhds z) (nhds (0 * 0)) := by apply Filter.Tendsto.mul h1 hDif
 norm_num at h2
-sorry
+have hElse : Filter.Tendsto (fun w => (f w - f z) / (w - z)) (nhds z) (nhds (deriv f z)):= by
+  rw[EMetric.tendsto_nhds_nhds] at h2
+  rw[EMetric.tendsto_nhds_nhds]
+  intro ε εx
+  have delta : ∃δ> 0, ∀ ⦃x : ℂ⦄, edist x z < δ → edist ((x - z) * ((x - z)⁻¹ * (f x - f z - (x - z) * deriv f z))) 0 < ε :=
+    by simp_all only [gt_iff_lt, ne_eq]
+  use (Exists.choose delta)
+  sorry
+have hIf : Filter.Tendsto (fun w => deriv f z) (nhds z) (nhds (deriv f z)) := by exact
+  tendsto_const_nhds
+exact (Filter.Tendsto.if' hIf hElse)
