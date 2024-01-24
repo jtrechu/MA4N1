@@ -9,9 +9,10 @@ open definitions
 open lemmas
 
 namespace lemmas
+
 lemma dist_tri_leq_perimeter (T : Triangle) (a b : ℂ) :
   a ∈ TriangularSet T ∧ b ∈ TriangularSet T → dist b a ≤ perimeter T := by
-  rewrite [Complex.dist_eq, ←Complex.norm_eq_abs]
+  rewrite [dist_eq_norm]
   intro ⟨ha, hb⟩
   unfold TriangularSet at ha hb
   have ⟨a₁, a₂, a₃, gtza1, gtza2, gtza3, eqa1, defa⟩ := ha
@@ -28,7 +29,7 @@ lemma dist_tri_leq_perimeter (T : Triangle) (a b : ℂ) :
   unfold perimeter
   apply le_trans
   exact triangle_inequality
-  repeat rewrite [Complex.instNormedFieldComplex.norm_mul']
+  repeat rewrite [norm_mul]
 
   have bounded1 : ‖b₁-a₁‖ ≤ 1 := by -- have to repeat the proof twice, unfortunate but necessary
     have bbound : b₁ ≤ 1 := by linarith -- (I think!)
