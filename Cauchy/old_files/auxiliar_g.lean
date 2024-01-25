@@ -19,6 +19,8 @@ open definitions
 
 namespace fun_g
 
+--This file was no longer needed. The g_auxiliar function is
+--already defined in lean as dslope
 
 variable {U : Set ℂ}
 
