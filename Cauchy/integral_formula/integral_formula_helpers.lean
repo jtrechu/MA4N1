@@ -43,3 +43,18 @@ have znotInPuncturedU : z∉(U\{z}) := by simp
 have hgD : DifferentiableOn ℂ f (U\{z}) := by apply DifferentiableOn.mono hfD trivialU
 rw[←differentiableOn_dslope_of_nmem znotInPuncturedU] at hgD
 exact(cauchy_for_triangles_generalised hU hT z gCont hgD)
+
+lemma dslope_split {T : Triangle} {f : ℂ → ℂ} (hU: IsCDomain U)
+(hT : TriangularBoundary T ⊆ U) (z : ℂ) (hfD : DifferentiableOn ℂ f U) ( hz : z ∈ TriangularBoundary T):
+trianglePathIntegral (dslope f z) T = trianglePathIntegral ((fun x => f x/(x-z))) T - trianglePathIntegral ((fun x => f z/(x-z))) T := by
+sorry
+
+lemma dslope_split' {T : Triangle} {f : ℂ → ℂ} (hU: IsCDomain U)
+(hT : TriangularBoundary T ⊆ U) (z : ℂ) (hfD : DifferentiableOn ℂ f U) ( hz : z ∈ TriangularBoundary T):
+trianglePathIntegral ((fun x => f x/(x-z))) T = trianglePathIntegral ((fun x => f z/(x-z))) T := by
+have : trianglePathIntegral (dslope f z) T = trianglePathIntegral ((fun x => f x/(x-z))) T - trianglePathIntegral ((fun x => f z/(x-z))) T :=
+  by exact dslope_split hU hT z hfD hz
+rw[dslope_integral_0 hU hT z hfD hz] at this
+rw[eq_sub_iff_add_eq] at this
+simp at this
+rw[this]
