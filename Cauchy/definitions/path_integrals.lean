@@ -16,6 +16,9 @@ open definitions
 
 namespace definitions
 
+-- Again, we had to change things in the groundwork, starting by the definition of what is considered as a path integral. This has been more challenging as it may seem,
+-- since until we created the final structure C1Path, it was difficult to deal with all the coercions and confusing things we got when unfolding pathIntegral1' in 
+-- order to prove properties related to path integrals.
 noncomputable def aux (f : ℂ → ℂ) (γ : C1Path) : ℝ → ℂ :=
   f ∘ γ * deriv γ
 

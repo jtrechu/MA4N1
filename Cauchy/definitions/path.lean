@@ -20,6 +20,8 @@ namespace definitions
 
 open unitInterval Finset DifferentiableOn definitions helpers
 
+-- After dealing with different structures, we ended up creating a new structure, C1Path, with convenient properties for the future proofs
+
 structure C1Path where
   toFun : ℝ → ℂ
   open_cover : UnitIntervalCover
@@ -45,6 +47,7 @@ def PiecewisePath.extend {n m : ℕ} (p : PiecewisePath n) (q : PiecewisePath m)
         rewrite [add_comm m n]; exact Fin.prop i
   }
 
+-- These properties are extremely useful 
 lemma C1Path.differentiableOnI (path : C1Path) : DifferentiableOn ℝ path I := by
   have ⟨a, _, gti, lts⟩ := path.open_cover.interval_apply
   apply DifferentiableOn.mono path.differentiable_toFun
