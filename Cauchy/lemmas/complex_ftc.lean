@@ -27,26 +27,6 @@ open definitions lemmas theorems
 open Set
 open Nat Real MeasureTheory Set Filter Function intervalIntegral Interval unitInterval
 
-lemma aux3 {f : ℂ → ℂ} {γ : C1Path}
-   (hf : DifferentiableAt ℝ (f ∘ γ) x) :
-    DifferentiableAt ℂ f (γ x) := by
-  sorry
-
-lemma complex_ftc1 {f : ℂ → ℂ} (γ : C1Path)
-    (hf_deriv : ∀ x ∈ (Set.uIcc 0 1), DifferentiableAt ℝ (f ∘ γ) x)
-    (hγ_deriv : ∀ x ∈ (Set.uIcc 0 1), DifferentiableAt ℝ γ x)
-    (h_int : IntervalIntegrable (deriv (f ∘ γ)) volume 0 1) :
-    pathIntegral1' (deriv f) γ = f (γ 1) - f (γ 0) := by
-  have : ∀ y ∈ (Set.uIcc 0 1), deriv f (γ y) * deriv γ y = deriv (f ∘ γ) y := by
-    intro y hy
-    rw [deriv.comp]
-    · exact aux3 (hf_deriv y hy)
-    · exact hγ_deriv y hy
-  unfold pathIntegral1'
-  unfold aux
-  simp
-  rw [integral_congr this, integral_deriv_eq_sub hf_deriv h_int]
-  trivial
 
 lemma complex_ftc' {f : ℂ → ℂ} {F : ℂ → ℂ} {U : Set ℂ} {γ : C1Path} (hU : IsOpen U) (hγ : γ '' I ⊆ U)
   (hf : DifferentiableOn ℂ f U) (hF : DifferentiableOn ℂ F U) (hfs : deriv F = f) :
@@ -118,22 +98,3 @@ lemma complex_ftc' {f : ℂ → ℂ} {F : ℂ → ℂ} {U : Set ℂ} {γ : C1Pat
     }
     exact d
   exact zero_le_one
-
-lemma aux2 {z w : ℂ} {f : ℂ → ℂ} {γ : Path z w} (hf : DifferentiableAt ℝ (f ∘ (Path.extend γ)) x) :
-           DifferentiableAt ℂ f ((Path.extend γ) x) := by
-  sorry
-
---lemma complex_ftc2 (z w : ℂ) (f : ℂ → ℂ) (γ : Path z w)
---     (hf_deriv : ∀ x ∈ (Set.uIcc 0 1), DifferentiableAt ℝ (f ∘ (Path.extend γ)) x)
---     (hγ_deriv : ∀ x ∈ (Set.uIcc 0 1), DifferentiableAt ℝ (Path.extend γ) x)
---     (h_int : IntervalIntegrable (deriv (f ∘ (Path.extend γ))) volume 0 1) :
---     pathIntegral1' (deriv f) γ = (f ∘ (Path.extend γ)) 1 - (f ∘ (Path.extend γ)) 0 := by
---     unfold pathIntegral1
---     unfold aux
---     have : ∀ y ∈ (Set.uIcc 0 1),(deriv f ∘ Path.extend γ * deriv (Path.extend γ)) y = deriv (f ∘ (Path.extend γ)) y := by
---       intro y hy
---       rw [deriv.comp]
---       simp
---       · exact aux2 (hf_deriv y hy)
---       · exact hγ_deriv y hy
---     rw [integral_congr this, integral_deriv_eq_sub hf_deriv h_int]
