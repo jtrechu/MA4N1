@@ -12,8 +12,10 @@ import Cauchy.definitions.domain
 import Cauchy.helpers.triangle
 import Cauchy.lemmas.zero_le_of_gt_zero
 
+
 open definitions unitInterval
 
+namespace definitions
 
 lemma helperCircleR : Differentiable ℝ (fun (θ:ℝ) => ↑θ * Complex.I*2*Real.pi) := by
     apply Differentiable.mul
@@ -34,12 +36,13 @@ exact h2
 
 
 noncomputable def funct1 : ℝ → ℂ := fun x => x * Complex.I * 2 * Real.pi
+noncomputable def funct2 : ℝ → ℂ := fun x => x * Complex.I
 
 lemma auxCircle' (x:ℝ) (c:ℂ) (R:ℝ) : deriv (fun θ:ℝ => c + ↑R * Complex.exp (↑θ * Complex.I*2*Real.pi)) x = (fun (θ:ℝ) =>(Complex.I*2*Real.pi)* (↑R:ℂ) * Complex.exp (↑θ * Complex.I*2*Real.pi)) x:= by
 have h1 : (fun θ:ℝ => Complex.exp (↑θ * Complex.I*2*Real.pi)) = (Complex.exp ∘ funct1) := by
   unfold funct1
   aesop
-aesop
+simp_all only [differentiableAt_const, deriv_const_add', deriv_const_mul_field']
 rw[deriv.comp]
 rw[Complex.deriv_exp]
 have h2: deriv funct1 x = Complex.I*2*Real.pi := by
@@ -66,6 +69,35 @@ repeat apply DifferentiableAt.mul
 apply  Differentiable.differentiableAt
 exact Complex.differentiable_coe
 any_goals apply differentiableAt_const
+
+
+lemma auxCircle''' (x:ℝ) : deriv (fun x => Complex.exp (↑x * Complex.I)) x = Complex.I * Complex.exp (x*Complex.I) := by
+have h1 : (fun θ:ℝ => Complex.exp (θ * Complex.I)) = (Complex.exp ∘ funct2) := by
+  unfold funct2
+  aesop
+simp_all only [differentiableAt_const, deriv_const_add', deriv_const_mul_field']
+rw[deriv.comp]
+rw[Complex.deriv_exp]
+have h2: deriv funct2 x = Complex.I := by
+  unfold funct2
+  repeat rw[deriv_mul_const]
+  ring_nf
+  norm_num
+  rw[Complex.deriv_coe x]
+  ring
+  apply Differentiable.differentiableAt
+  exact Complex.differentiable_coe
+rw[h2]
+unfold funct2
+ring
+unfold funct2
+apply  Differentiable.differentiableAt
+exact Complex.differentiable_exp
+unfold funct2
+repeat apply DifferentiableAt.mul
+apply  Differentiable.differentiableAt
+any_goals apply differentiableAt_const
+exact Complex.differentiable_coe
 
 lemma auxCircle''  (R:ℝ) : Continuous  (fun (θ:ℝ) =>(Complex.I*2*Real.pi)* (↑R:ℂ) * Complex.exp (↑θ * Complex.I*2*Real.pi)) := by
 apply Continuous.mul
