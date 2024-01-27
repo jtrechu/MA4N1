@@ -15,7 +15,7 @@ import Cauchy.definitions.circularPaths
 
 open definitions unitInterval intervalIntegral
 
-lemma equivalentDefinitions (c:ℂ) (R:ℝ) (f : ℂ→ℂ ): pathIntegral1' f (circlePath c R) = circleIntegral f c R := by
+theorem equivalentDefinitions (c:ℂ) (R:ℝ) (f : ℂ→ℂ ): pathIntegral1' f (circlePath c R) = circleIntegral f c R := by
 unfold pathIntegral1'
 unfold aux
 unfold circlePath
