@@ -15,40 +15,46 @@ import Cauchy.lemmas.zero_le_of_gt_zero
 open definitions unitInterval
 
 
-lemma helperCircleR : Differentiable ℝ (fun (θ:ℝ) => ↑θ * Complex.I) := by
-    have h11 : Differentiable ℝ (fun _:ℝ => Complex.I) := by simp_all only [differentiable_const]
+lemma helperCircleR : Differentiable ℝ (fun (θ:ℝ) => ↑θ * Complex.I*2*Real.pi) := by
+    apply Differentiable.mul
+    apply Differentiable.mul
     apply Differentiable.mul
     exact Complex.differentiable_coe
-    exact h11
+    any_goals apply differentiable_const
 
 
-lemma auxCircle (c:ℂ) (R:ℝ) :  Differentiable ℝ (circleMap c R) := by
-unfold circleMap
+lemma auxCircle (c:ℂ) (R:ℝ) :  Differentiable ℝ (fun θ:ℝ => c + ↑R * Complex.exp (↑θ * Complex.I*2*Real.pi)) := by
 apply Differentiable.add
 exact differentiable_const c
 apply Differentiable.mul
 exact differentiable_const (↑R:ℂ)
-have h2 : Differentiable ℝ (fun (θ:ℝ) =>  Complex.exp (↑θ * Complex.I)):= by
+have h2 : Differentiable ℝ (fun (θ:ℝ) =>  Complex.exp (↑θ * Complex.I*2*Real.pi)):= by
     apply (Differentiable.cexp helperCircleR)
 exact h2
 
 
-def funct1 : ℝ → ℂ := (fun x => x*Complex.I)
+noncomputable def funct1 : ℝ → ℂ := fun x => x * Complex.I * 2 * Real.pi
 
-lemma auxCircle' (x:ℝ) (c:ℂ) (R:ℝ) : deriv (circleMap c R) x = (fun (θ:ℝ) =>(Complex.I)* (↑R:ℂ) * Complex.exp (↑θ * Complex.I)) x:= by
-unfold circleMap
-have h1 : (fun θ:ℝ => Complex.exp (↑θ * Complex.I)) = (Complex.exp ∘ funct1) := by
+lemma auxCircle' (x:ℝ) (c:ℂ) (R:ℝ) : deriv (fun θ:ℝ => c + ↑R * Complex.exp (↑θ * Complex.I*2*Real.pi)) x = (fun (θ:ℝ) =>(Complex.I*2*Real.pi)* (↑R:ℂ) * Complex.exp (↑θ * Complex.I*2*Real.pi)) x:= by
+have h1 : (fun θ:ℝ => Complex.exp (↑θ * Complex.I*2*Real.pi)) = (Complex.exp ∘ funct1) := by
   unfold funct1
   aesop
 aesop
 rw[deriv.comp]
 rw[Complex.deriv_exp]
-have h2: deriv funct1 x = Complex.I := by
+have h2: deriv funct1 x = Complex.I*2*Real.pi := by
   unfold funct1
-  rw[deriv_mul_const]
+  repeat rw[deriv_mul_const]
   rw[Complex.deriv_coe]
   ring_nf
+  norm_num
   apply Complex.differentiable_coe
+  apply Differentiable.mul
+  apply Complex.differentiable_coe
+  exact differentiable_const Complex.I
+  repeat apply Differentiable.mul
+  apply Complex.differentiable_coe
+  any_goals apply differentiable_const
 rw[h2]
 unfold funct1
 ring
@@ -56,32 +62,32 @@ unfold funct1
 apply  Differentiable.differentiableAt
 exact Complex.differentiable_exp
 unfold funct1
-apply DifferentiableAt.mul
+repeat apply DifferentiableAt.mul
 apply  Differentiable.differentiableAt
 exact Complex.differentiable_coe
-exact differentiableAt_const Complex.I
+any_goals apply differentiableAt_const
 
-lemma auxCircle''  (R:ℝ) : Continuous  (fun (θ:ℝ) =>(Complex.I)* (↑R:ℂ) * Complex.exp (↑θ * Complex.I)) := by
+lemma auxCircle''  (R:ℝ) : Continuous  (fun (θ:ℝ) =>(Complex.I*2*Real.pi)* (↑R:ℂ) * Complex.exp (↑θ * Complex.I*2*Real.pi)) := by
 apply Continuous.mul
 exact continuous_const
-have h1 : (fun θ:ℝ => Complex.exp (↑θ * Complex.I)) = (Complex.exp ∘ funct1) := by
+have h1 : (fun θ:ℝ => Complex.exp (↑θ * Complex.I*2*Real.pi)) = (Complex.exp ∘ funct1) := by
   unfold funct1
   aesop
 rw[h1]
 apply Continuous.comp
 apply Complex.continuous_exp
 unfold funct1
-apply Continuous.mul
+repeat apply Continuous.mul
 have h2 : Differentiable ℝ (fun x:ℝ => (↑x:ℂ)) := by
   apply Complex.differentiable_coe
 apply Differentiable.continuous at h2
 exact h2
-exact continuous_const
+any_goals exact continuous_const
 
 
 
 noncomputable def circlePath (c: ℂ) (R : ℝ) : C1Path := {
-  toFun := circleMap c R
+  toFun := fun θ:ℝ => c + ↑R * Complex.exp (↑θ * Complex.I*2*Real.pi)
   open_cover := {
       set := Set.univ
       h := ⟨isOpen_univ, Set.subset_univ I⟩
