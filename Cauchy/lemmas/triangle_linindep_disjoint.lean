@@ -6,7 +6,6 @@ import Cauchy.lemmas.triangle_inequality
 import Cauchy.lemmas.complex_real_norm_equiv
 import Cauchy.helpers.triangle
 import Cauchy.theorems.triangle_compact
-import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 
 open definitions
 open lemmas Matrix.vecMul

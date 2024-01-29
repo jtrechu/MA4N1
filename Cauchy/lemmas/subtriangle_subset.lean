@@ -11,13 +11,6 @@ open helpers
 
 namespace lemmas
 
-lemma boundary_in_set {T : Triangle} : TriangularBoundary T ⊆ TriangularSet T := by
-  unfold TriangularBoundary TriangularSet
-  repeat intro x
-  simp at *
-  have ⟨a, b, c, d, e, f, g, _, i⟩ := x
-  exact ⟨a, b, c, d, e, f, g, i⟩
-
 lemma subtriangle_subset' {T : Triangle } (sT : SubTriangle T) :
   TriangularSet sT ⊆ TriangularSet T := by
     have {a := sTa, b := sTb, c := sTc, ha, hb, hc} := sT

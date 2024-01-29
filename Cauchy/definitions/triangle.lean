@@ -7,7 +7,7 @@ import Cauchy.definitions.linear_path
 import Cauchy.definitions.path_integrals
 import Cauchy.helpers.piecewise_paths
 
-open helpers
+open helpers Set
 
 namespace definitions
 
@@ -22,11 +22,9 @@ def Trivial (triangle : Triangle) : Prop :=
 -- unsure about computability, but actually may not be on further reflection
 def Triangle.path (triangle : Triangle) : PiecewisePath 3 :=
   {
-    paths := λ i =>
-      match i with
-      | 0 => LinearPath.mk triangle.a triangle.b
-      | 1 => LinearPath.mk triangle.b triangle.c
-      | 2 => LinearPath.mk triangle.c triangle.a
+    paths := ![LinearPath.mk triangle.a triangle.b,
+               LinearPath.mk triangle.b triangle.c,
+               LinearPath.mk triangle.c triangle.a]
   }
 
 noncomputable def trianglePathIntegral (f : ℂ → ℂ) (T : Triangle) := pathIntegral1 f T.path
@@ -44,6 +42,11 @@ noncomputable def perimeter (triangle : Triangle) : ℝ :=
   dist triangle.b triangle.a +
   dist triangle.c triangle.b +
   dist triangle.a triangle.c
+
+lemma perimeter_nonneg (triangle : Triangle) : perimeter triangle ≥ 0 := by
+  unfold perimeter
+  repeat apply add_nonneg
+  all_goals apply dist_nonneg
 
 def TriangularSet (triangle : Triangle) : Set ℂ :=
   {z | ∃ (t₁ t₂ t₃ : ℝ), t₁ ≥ 0 ∧ t₂ ≥ 0 ∧ t₃ ≥ 0 ∧
@@ -73,5 +76,52 @@ def TriangularBoundary (triangle : Triangle) : Set ℂ :=
   {z | ∃ (t₁ t₂ t₃ : ℝ), t₁ ≥ 0 ∧ t₂ ≥ 0 ∧ t₃ ≥ 0 ∧
     t₁ + t₂ + t₃ = 1 ∧ t₁*t₂*t₃ = 0 ∧
     (z = t₁*triangle.a + t₂*triangle.b + t₃*triangle.c) }
+
+lemma boundary_in_set {T : Triangle} : TriangularBoundary T ⊆ TriangularSet T := by
+  unfold TriangularBoundary TriangularSet
+  repeat intro x
+  simp at *
+  have ⟨a, b, c, d, e, f, g, _, i⟩ := x
+  exact ⟨a, b, c, d, e, f, g, i⟩
+
+def TriangularInterior (triangle : Triangle) : Set ℂ :=
+  {z | ∃ (t₁ t₂ t₃ : ℝ), t₁ > 0 ∧ t₂ > 0 ∧ t₃ > 0 ∧
+    t₁ + t₂ + t₃ = 1 ∧ (z = t₁*triangle.a + t₂*triangle.b + t₃*triangle.c) }
+
+def interior_in_set {T : Triangle} : TriangularInterior T ⊆ TriangularSet T := by
+  unfold TriangularInterior TriangularSet
+  repeat intro x
+  simp at *
+  have ⟨a, b, c, d, e, f, g, i⟩ := x
+  exact ⟨a, le_of_lt b, c, le_of_lt d, e, le_of_lt f, g, i⟩
+
+lemma triangle_union (triangle : Triangle) :
+  TriangularSet T = TriangularBoundary T ∪ TriangularInterior T := by
+  apply Set.Subset.antisymm
+  . rewrite [TriangularBoundary, TriangularInterior, TriangularSet,
+    Set.subset_def]
+    intro x ⟨a, b, c, gtza, gtzb, gtzc, sum, defx⟩
+    by_cases a*b*c=0
+    apply Or.inl
+    exact ⟨a, b, c, gtza, gtzb, gtzc, sum, h, defx⟩
+    apply Or.inr
+    simp at h; push_neg at h; have ⟨⟨na, nb⟩, nc⟩ := h
+    exact ⟨a, b, c, Ne.lt_of_le (Ne.symm na) gtza, Ne.lt_of_le (Ne.symm nb) gtzb,
+            Ne.lt_of_le (Ne.symm nc) gtzc, sum, defx⟩
+  . exact Set.union_subset boundary_in_set interior_in_set
+
+def LinIndep (T : Triangle) : Prop :=
+  LinearIndependent ℝ ![T.a-T.c, T.b-T.c]
+
+lemma linindep_not_trivial (T : Triangle) : LinIndep T → ¬Trivial T := by
+  contrapose
+  simp only [not_not]
+  unfold Trivial LinIndep
+  intro ⟨hab, hbc⟩
+  rewrite [LinearIndependent.pair_iff]
+  push_neg
+  use 1, 2
+  rewrite [hab, hbc]
+  simp
 
 end definitions

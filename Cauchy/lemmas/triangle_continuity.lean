@@ -19,7 +19,6 @@ lemma continuous_add_components : Continuous AddComponents := by
     repeat' exact continuous_snd
 
 
-
 lemma continuous_triangle_point {T : Triangle} : Continuous $ TrianglePoint T := by
   unfold TrianglePoint
   repeat apply Continuous.add

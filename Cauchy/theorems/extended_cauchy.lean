@@ -9,6 +9,8 @@ import Cauchy.definitions.path_integrals
 import Cauchy.definitions.domain
 import Cauchy.definitions.eps_subtriangle
 import Cauchy.helpers.triangle
+import Cauchy.lemmas.triangle_linindep_disjoint
+import Cauchy.lemmas.eps_subtriangle
 
 import Cauchy.theorems.intermediate_cauchy
 import Cauchy.theorems.cauchys_theorem_for_triangles
@@ -16,7 +18,7 @@ import Cauchy.theorems.zero_integral_zero
 
 open definitions lemmas theorems unitInterval
 
-theorem extended_cauchy {U : Set ℂ } {T : Triangle} {f : ℂ  → ℂ } {z : ℂ} (hz : z ∈ interior (TriangularSet T))
+theorem extended_cauchy {U : Set ℂ } {T : Triangle} {f : ℂ  → ℂ } {z : ℂ} (hz : z ∈ TriangularInterior T)
   (hU: IsCDomain U) (hT : TriangularBoundary T ⊆ U) (hf : ContinuousOn f U)
   (hf' : DifferentiableOn ℂ f (U \ {z})) : trianglePathIntegral f T = 0 := by
 
@@ -121,10 +123,12 @@ theorem extended_cauchy {U : Set ℂ } {T : Triangle} {f : ℂ  → ℂ } {z : �
   rewrite [Set.mem_diff]
   push_neg
   intro _
-  unfold TriangularSet
-  refine ⟨(1/3), (1/3), (1/3), by norm_num, by norm_num, by norm_num, by norm_num, ?_⟩
-  unfold eps_subtriangle
-  simp only [one_div, Complex.ofReal_inv, Complex.ofReal_ofNat, ge_iff_le]
-  ring
-  sorry -- Topological proof on a triangle is annoying
+  apply Set.mem_of_subset_of_mem interior_in_set
+  apply eps_subtriange_mem_interior
+
+  have dj := Set.disjoint_right.1 $
+    triangle_disjoint_if_linindep (eps_subtriangle T z hz (e / ub) hp) ?_
+  apply dj
+  apply eps_subtriange_mem_interior
+  apply eps_subtriangle_linindep
   exact hf'

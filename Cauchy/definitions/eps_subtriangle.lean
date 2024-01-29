@@ -10,19 +10,24 @@ import Cauchy.definitions.path_integrals
 import Cauchy.definitions.domain
 import Cauchy.helpers.triangle
 
-open definitions
+import Cauchy.lemmas.triangle_topology
+
+open definitions lemmas
 
 namespace definitions
 
-lemma exists_point_around (z : ℂ) (hz : z ∈ interior (TriangularSet T)) :
+lemma exists_point_around (z : ℂ) (hz : z ∈ TriangularInterior T) :
   ∃ε > 0, Metric.ball z ε ⊆ interior (TriangularSet T)
-  := Metric.isOpen_iff.1 (isOpen_interior (s:=TriangularSet T)) z hz
+  := by
+    refine Metric.isOpen_iff.1 (isOpen_interior (s:=TriangularSet T)) z ?_
+    rewrite [triangle_interior_interior]
+    exact hz
 
-lemma point_around (z : ℂ) (hz : z ∈ interior (TriangularSet T)) : ℝ := Exists.choose (
+lemma point_around (z : ℂ) (hz : z ∈ TriangularInterior T) : ℝ := Exists.choose (
   exists_point_around z hz
 )
 
-lemma point_around_apply (z : ℂ) (hz : z ∈ interior (TriangularSet T)) :
+lemma point_around_apply (z : ℂ) (hz : z ∈ TriangularInterior T) :
   (point_around z hz) > 0 ∧ Metric.ball z (point_around z hz) ⊆ interior (TriangularSet T) := by
   unfold point_around
   exact Exists.choose_spec $ exists_point_around z hz
@@ -31,7 +36,7 @@ lemma ineq : Real.sqrt (4 * 4 + 1)/18 < 1 := by
   rewrite [div_lt_one, Real.sqrt_lt']
   all_goals norm_num
 
-noncomputable def eps_subtriangle (T : Triangle) (z : ℂ) (hz : z ∈ interior (TriangularSet T))
+noncomputable def eps_subtriangle (T : Triangle) (z : ℂ) (hz : z ∈ TriangularInterior T)
   (ε : ℝ) (he : ε > 0) : SubTriangle T := {
   a := z + 2 * (min ε (point_around z hz))/18 * Complex.I
   b := z - (Complex.I + 4) * (min ε (point_around z hz))/18
@@ -103,7 +108,7 @@ lemma sqrt_324 : Real.sqrt 324 = 18 := by
   rewrite [Real.sqrt_eq_iff_mul_self_eq_of_pos]
   all_goals norm_num
 
-lemma eps_subtriangle_apply (T : Triangle) (z : ℂ) (hz : z ∈ interior (TriangularSet T))
+lemma eps_subtriangle_apply (T : Triangle) (z : ℂ) (hz : z ∈ TriangularInterior T)
   (ε : ℝ) (he : ε > 0) : (perimeter $ eps_subtriangle T z hz ε he) ≤ ε := by
   unfold perimeter
   unfold eps_subtriangle
