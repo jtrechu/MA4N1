@@ -19,6 +19,9 @@ structure Triangle where
 def Trivial (triangle : Triangle) : Prop :=
   triangle.a = triangle.b ∧ triangle.b = triangle.c
 
+def Distinct (triangle : Triangle) : Prop :=
+  triangle.a ≠ triangle.b ∧ triangle.b ≠ triangle.c ∧ triangle.c ≠ triangle.a
+
 -- unsure about computability, but actually may not be on further reflection
 def Triangle.path (triangle : Triangle) : PiecewisePath 3 :=
   {
@@ -95,7 +98,7 @@ def interior_in_set {T : Triangle} : TriangularInterior T ⊆ TriangularSet T :=
   have ⟨a, b, c, d, e, f, g, i⟩ := x
   exact ⟨a, le_of_lt b, c, le_of_lt d, e, le_of_lt f, g, i⟩
 
-lemma triangle_union (triangle : Triangle) :
+lemma triangle_union (T : Triangle) :
   TriangularSet T = TriangularBoundary T ∪ TriangularInterior T := by
   apply Set.Subset.antisymm
   . rewrite [TriangularBoundary, TriangularInterior, TriangularSet,
@@ -113,15 +116,24 @@ lemma triangle_union (triangle : Triangle) :
 def LinIndep (T : Triangle) : Prop :=
   LinearIndependent ℝ ![T.a-T.c, T.b-T.c]
 
-lemma linindep_not_trivial (T : Triangle) : LinIndep T → ¬Trivial T := by
+lemma linindep_not_trivial (T : Triangle) : LinIndep T → Distinct T := by
   contrapose
-  simp only [not_not]
-  unfold Trivial LinIndep
-  intro ⟨hab, hbc⟩
-  rewrite [LinearIndependent.pair_iff]
-  push_neg
-  use 1, 2
-  rewrite [hab, hbc]
-  simp
+  unfold Distinct LinIndep
+  repeat rewrite [not_and_or]
+  intro ne
+  simp only [ne_eq, not_not] at ne
+  rcases ne with h | h | h
+  all_goals
+    rewrite [LinearIndependent.pair_iff]
+    push_neg
+  . use 1, -1
+    rewrite [h]
+    simp
+  . use 0, 1
+    rewrite [h]
+    simp
+  . use 1, 0
+    rewrite [h]
+    simp
 
 end definitions

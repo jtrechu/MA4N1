@@ -18,7 +18,8 @@ import Cauchy.theorems.zero_integral_zero
 
 open definitions lemmas theorems unitInterval
 
-theorem extended_cauchy {U : Set ℂ } {T : Triangle} {f : ℂ  → ℂ } {z : ℂ} (hz : z ∈ TriangularInterior T)
+theorem extended_cauchy {U : Set ℂ } {T : Triangle} {f : ℂ  → ℂ } {z : ℂ}
+  (hz : z ∈ (interior $ TriangularSet T))
   (hU: IsCDomain U) (hT : TriangularBoundary T ⊆ U) (hf : ContinuousOn f U)
   (hf' : DifferentiableOn ℂ f (U \ {z})) : trianglePathIntegral f T = 0 := by
 
@@ -51,7 +52,7 @@ theorem extended_cauchy {U : Set ℂ } {T : Triangle} {f : ℂ  → ℂ } {z : �
     refine div_pos he ubgtz
 
   have hInt := intermediate_cauchy (T:=T)
-    (sT:=eps_subtriangle T z hz (e/ub) hp)
+    (sT:=eps_subtriangle z hz (e/ub) hp)
     (f:=f) (U:=U\{z})
     ?_ ?_ ?_
 
@@ -71,28 +72,28 @@ theorem extended_cauchy {U : Set ℂ } {T : Triangle} {f : ℂ  → ℂ } {z : �
     simp only [norm_mul]
     rewrite [deriv_linear_path]
   pick_goal 2;
-  exact ub * ‖(eps_subtriangle T z hz (e/ub) hp).b - (eps_subtriangle T z hz (e/ub) hp).a‖
+  exact ub * ‖(eps_subtriangle z hz (e/ub) hp).b - (eps_subtriangle z hz (e/ub) hp).a‖
   pick_goal 3;
-  exact ub * ‖(eps_subtriangle T z hz (e/ub) hp).c - (eps_subtriangle T z hz (e/ub) hp).b‖
+  exact ub * ‖(eps_subtriangle z hz (e/ub) hp).c - (eps_subtriangle z hz (e/ub) hp).b‖
   pick_goal 4;
-  exact ub * ‖(eps_subtriangle T z hz (e/ub) hp).a - (eps_subtriangle T z hz (e/ub) hp).c‖
+  exact ub * ‖(eps_subtriangle z hz (e/ub) hp).a - (eps_subtriangle z hz (e/ub) hp).c‖
   any_goals
     apply mul_le_mul_of_nonneg_right
     apply hub
     apply Set.mem_image_of_mem
     apply Set.mem_of_subset_of_mem
-    apply subtriangle_subset' (eps_subtriangle T z hz (e/ub) hp)
-  apply linear_path_contained (eps_subtriangle T z hz (e/ub) hp)
-    (eps_subtriangle T z hz (e/ub) hp).a (eps_subtriangle T z hz (e/ub) hp).b
-    (eps_subtriangle T z hz (e/ub) hp).contains_a (eps_subtriangle T z hz (e/ub) hp).contains_b
+    apply subtriangle_subset' (eps_subtriangle z hz (e/ub) hp)
+  apply linear_path_contained (eps_subtriangle z hz (e/ub) hp)
+    (eps_subtriangle z hz (e/ub) hp).a (eps_subtriangle z hz (e/ub) hp).b
+    (eps_subtriangle z hz (e/ub) hp).contains_a (eps_subtriangle z hz (e/ub) hp).contains_b
   pick_goal 3;
-  apply linear_path_contained (eps_subtriangle T z hz (e/ub) hp)
-    (eps_subtriangle T z hz (e/ub) hp).b (eps_subtriangle T z hz (e/ub) hp).c
-    (eps_subtriangle T z hz (e/ub) hp).contains_b (eps_subtriangle T z hz (e/ub) hp).contains_c
+  apply linear_path_contained (eps_subtriangle z hz (e/ub) hp)
+    (eps_subtriangle z hz (e/ub) hp).b (eps_subtriangle z hz (e/ub) hp).c
+    (eps_subtriangle z hz (e/ub) hp).contains_b (eps_subtriangle z hz (e/ub) hp).contains_c
   pick_goal 5;
-  apply linear_path_contained (eps_subtriangle T z hz (e/ub) hp)
-    (eps_subtriangle T z hz (e/ub) hp).c (eps_subtriangle T z hz (e/ub) hp).a
-    (eps_subtriangle T z hz (e/ub) hp).contains_c (eps_subtriangle T z hz (e/ub) hp).contains_a
+  apply linear_path_contained (eps_subtriangle z hz (e/ub) hp)
+    (eps_subtriangle z hz (e/ub) hp).c (eps_subtriangle z hz (e/ub) hp).a
+    (eps_subtriangle z hz (e/ub) hp).contains_c (eps_subtriangle z hz (e/ub) hp).contains_a
   any_goals
     apply Set.mem_image_of_mem
     exact Set.mem_Icc_of_Ioc hx
@@ -127,7 +128,7 @@ theorem extended_cauchy {U : Set ℂ } {T : Triangle} {f : ℂ  → ℂ } {z : �
   apply eps_subtriange_mem_interior
 
   have dj := Set.disjoint_right.1 $
-    triangle_disjoint_if_linindep (eps_subtriangle T z hz (e / ub) hp) ?_
+    triangle_disjoint_if_linindep (eps_subtriangle z hz (e / ub) hp) ?_
   apply dj
   apply eps_subtriange_mem_interior
   apply eps_subtriangle_linindep
