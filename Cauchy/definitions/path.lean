@@ -20,7 +20,10 @@ namespace definitions
 
 open unitInterval Finset DifferentiableOn definitions helpers
 
--- After dealing with different structures, we ended up creating a new structure, C1Path, with convenient properties for the future proofs
+-- The Path structure in Mathlib wasn't the best fit when working with IntervalIntegrals or with deriv, so we created a new structure
+
+-- The C1 path is defined by an ℝ → ℂ function which is required to be differentiable and continuous (so C¹) on a open set that
+-- contains the unit interval [0,1] (which we have named a UnitIntervalCover)
 
 structure C1Path where
   toFun : ℝ → ℂ
@@ -28,14 +31,25 @@ structure C1Path where
   differentiable_toFun : DifferentiableOn ℝ toFun open_cover
   continuous_deriv_toFun : ContinuousOn (deriv toFun) open_cover
 
+-- We want Lean to be able to interpret C1Paths as maps when needed
+-- (just like when on paper we refer to a path when we mean the actual path or just its parametrization)
+
 instance : CoeFun (C1Path) fun _ => ℝ → ℂ :=
   ⟨fun p => p.toFun⟩
+
+
+--For paths that aren't C1Paths but rather piece-wise C¹ paths we create PieceWisePaths as map:
+-- p : {1,2,...,n} → C¹ Paths, so that the path will be the concatenation of p(1),p(2),...,p(n)
 
 structure PiecewisePath (count : ℕ) where
   paths : Fin count → C1Path
 
+-- Clearly a C¹ Path can be seen as a 1-piece Piece-wise path
+
 instance : Coe C1Path (PiecewisePath 1) where
   coe := λ p => {paths := λ 0 => p}
+
+--We define the concatenation of a p-piece-wise path and a q-piece-wise path as a (p+q)-piece-wise path
 
 def PiecewisePath.extend {n m : ℕ} (p : PiecewisePath n) (q : PiecewisePath m) : PiecewisePath (n + m) :=
   {
@@ -47,7 +61,12 @@ def PiecewisePath.extend {n m : ℕ} (p : PiecewisePath n) (q : PiecewisePath m)
         rewrite [add_comm m n]; exact Fin.prop i
   }
 
--- These properties are extremely useful 
+
+
+-- Now we'll prove the results that come as a result of this new definiton of Paths:
+
+--Firstly, the paths are continuous and differentiable on the unit interval (as they are so in a open cover of I)
+
 lemma C1Path.differentiableOnI (path : C1Path) : DifferentiableOn ℝ path I := by
   have ⟨a, _, gti, lts⟩ := path.open_cover.interval_apply
   apply DifferentiableOn.mono path.differentiable_toFun
@@ -60,6 +79,9 @@ lemma C1Path.continuousDerivOnI (path : C1Path) : ContinuousOn (deriv path) I :=
   have ⟨a, _, gti, lts⟩ := path.open_cover.interval_apply
   apply ContinuousOn.mono path.continuous_deriv_toFun
   exact subset_trans gti lts
+
+
+--We now define linear transformations of paths and see that all properties of C1Paths hold for this transformation
 
 def C1Path.transform (path : C1Path) (scale : I) (offset : I) (ho : offset ≤ (1:ℝ) - scale)
   (hs : scale ≠ 0) : C1Path := {
@@ -123,6 +145,8 @@ def C1Path.transform (path : C1Path) (scale : I) (offset : I) (ho : offset ≤ (
       exact inequalities.unit_transform_mem_cover scale hs x gti offset ho
   }
 
+-- We now prove that the C1Path in opposite direction is also a C1Path, by defining the reverse and proving that the properties hold
+
 def C1Path.reverse (path : C1Path) : C1Path := {
   toFun := λ x => path.toFun (1 - x)
 
@@ -185,6 +209,9 @@ def C1Path.reverse (path : C1Path) : C1Path := {
       intro x
       exact inequalities.reverse_mem_cover x
 }
+
+-- We now show that a C1Path can be split in to two pieces at a point x on I, and the two resulting paths can be seen
+-- as a 2-piece-wise path
 
 def C1Path.split (path : C1Path) (split : Set.Ioo (0:ℝ) 1) : PiecewisePath 2 := {
   paths := λ i => (by

@@ -12,10 +12,14 @@ import Cauchy.definitions.domain
 import Cauchy.helpers.triangle
 import Cauchy.lemmas.zero_le_of_gt_zero
 
+--In this file we prove that the circle with its exponential parametrisation c+R*exp(2iπθ) for θ ∈ [0,1]
+--is a C1path as we have defined them
 
 open definitions unitInterval
 
 namespace definitions
+
+-- First we will prove some results about continuity and differentiability of the function as a ℝ-valued function
 
 lemma helperCircleR : Differentiable ℝ (fun (θ:ℝ) => ↑θ * Complex.I*2*Real.pi) := by
     apply Differentiable.mul
@@ -116,6 +120,8 @@ apply Differentiable.continuous at h2
 exact h2
 any_goals exact continuous_const
 
+
+--Now we are ready to define the circle as a C1Path
 
 
 noncomputable def circlePath (c: ℂ) (R : ℝ) : C1Path := {

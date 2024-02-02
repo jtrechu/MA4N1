@@ -8,12 +8,18 @@ open definitions
 
 namespace definitions
 
+-- In this file we define the notion of subtriangles
+
 structure SubTriangle (T : Triangle) extends Triangle where
   ha : a ∈ TriangularSet T
   hb : b ∈ TriangularSet T
   hc : c ∈ TriangularSet T
 
 instance {T : Triangle} (sT : SubTriangle T) : CoeDep (SubTriangle T) sT Triangle where coe := SubTriangle.toTriangle sT
+
+-- Given a triangle, a subtriangle will be defined by 9 parameters, in groups of 3 these parameters each give a convex combination
+-- of the vertices of the original triangle, the three points defined by these convex combinations will be the vertices of the
+-- subtriangle.
 
 def constructSubTriangle (coveringTriangle : Triangle) (a1 b1 c1 a2 b2 c2 a3 b3 c3 : ℝ)
   (hsum1 : a1+b1+c1 = 1 := by ring) (hsum2 : a2+b2+c2 = 1 := by ring) (hsum3 : a3+b3+c3 = 1 := by ring)
@@ -29,6 +35,9 @@ def constructSubTriangle (coveringTriangle : Triangle) (a1 b1 c1 a2 b2 c2 a3 b3 
     hb := ⟨a2, b2, c2, a2gtz, b2gtz, c2gtz, hsum2, by simp; ring⟩
     hc := ⟨a3, b3, c3, a3gtz, b3gtz, c3gtz, hsum3, by simp; ring⟩
   }
+
+-- Now we focus on the tree subtriangles that will be widely used for this proof. These are the triangles result of using
+-- either the three midpoints of the sides, or two midpoints with an original vertex.
 
 noncomputable def subTriangleA (coveringTriangle : Triangle) :=
   constructSubTriangle coveringTriangle 1 0 0 (1/2) (1/2) 0 (1/2) 0 (1/2)

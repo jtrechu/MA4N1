@@ -16,20 +16,26 @@ open definitions
 
 namespace definitions
 
--- Again, we had to change things in the groundwork, starting by the definition of what is considered as a path integral. This has been more challenging as it may seem,
--- since until we created the final structure C1Path, it was difficult to deal with all the coercions and confusing things we got when unfolding pathIntegral1' in 
--- order to prove properties related to path integrals.
+-- With the C1Path structure and the PiecewisePath structure we can now define the path integral
+
+-- For C1 paths we define it naturally as a interval integral of a ℝ valued function
+
 noncomputable def aux (f : ℂ → ℂ) (γ : C1Path) : ℝ → ℂ :=
   f ∘ γ * deriv γ
 
 noncomputable def pathIntegral1' (f : ℂ → ℂ) (γ : C1Path ) : ℂ :=
   ∫t in (0)..(1), (aux f γ) t ∂volume
 
+-- For pieceWise paths we define it as the sum of the pieces, with this we're defining the integral as it is
+-- as it is usually defined, avoiding points where the path is continuous but not differentiable
+
 noncomputable def pathIntegral1 {n : ℕ} (f : ℂ → ℂ) (p : PiecewisePath n) : ℂ :=
   ∑ i, pathIntegral1' f (p.paths i)
 
 noncomputable def pathIntegral_bounds (f : ℂ → ℂ) (γ : C1Path) (a b : ℝ) : ℂ :=
   ∫t in (a)..(b), (aux f γ) t ∂volume
+
+--We also define the lenghts of C1Paths
 
 noncomputable def length (γ : C1Path) : ℝ :=
 ∫ t in (0)..(1), Complex.abs (deriv γ t) ∂volume
