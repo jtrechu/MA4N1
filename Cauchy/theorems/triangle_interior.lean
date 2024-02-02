@@ -5,5 +5,8 @@ namespace theorems
 
 open definitions
 
+-- This is the only sorryed lemma in the main result. It follows from the fact that the triangle in
+--convex (which we have shown), however, this result was likely too hard for us to prove
+
 theorem triangle_interior_contained {U : Set ℂ} {T : Triangle}
-  (h : TriangularBoundary T ⊆ U) (hU : IsCDomain U) : TriangularSet T ⊆ U := by sorry -- unfortunately this is likely too hard!
+  (h : TriangularBoundary T ⊆ U) (hU : IsCDomain U) : TriangularSet T ⊆ U := by sorry

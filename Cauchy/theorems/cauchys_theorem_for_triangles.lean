@@ -16,6 +16,9 @@ import Cauchy.integral_zero._4_integral_bound
 
 open definitions lemmas helpers.triangle
 
+-- This is the main theorem to prove. The fact that all holomorphic (Differentiable functions) have
+-- 0-valued integral over triangles
+
 theorem cauchy_for_triangles {U : Set ℂ } {T : Triangle} {f : ℂ  → ℂ }
 (hU: IsCDomain U) (hT : TriangularBoundary T ⊆ U) (hf : DifferentiableOn ℂ f U )
 : trianglePathIntegral f T = 0 := by

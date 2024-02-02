@@ -15,6 +15,9 @@ import Cauchy.theorems.triangle_interior
 
 open definitions lemmas unitInterval theorems
 
+--In this file we'll show that if a function is 0 at all points of the
+--Triangular set then the pathIntegral over the triangle is 0
+
 theorem zero_integral_zero {T : Triangle} {f : ℂ  → ℂ}
   (hf : ∀u∈(TriangularSet T), f u = 0) : trianglePathIntegral f T = 0 := by
 

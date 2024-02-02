@@ -11,9 +11,19 @@ import Cauchy.definitions.path_integrals
 import Cauchy.definitions.domain
 import Cauchy.helpers.triangle
 import Cauchy.lemmas.zero_le_of_gt_zero
-import Cauchy.definitions.circularPaths
+import Cauchy.connection_with_mathlib.circularPaths
 
 open definitions unitInterval intervalIntegral
+
+--This file is also some extra work not originally part of the project
+
+--What we aim to do is make a connection between our code and Mathlib's code.
+--For this we have already defined circular paths as C¹ paths as we have defined them.
+
+--Now, what we do is show that circleIntegral (which is the only kind of complex path integral that has
+--already been defined in Mathlib) is equivalent to PathIntegral1' when the path is a circle.
+
+--This seems like an important result to have in order for our code to be more useful in the long run
 
 theorem equivalentDefinitions (c:ℂ) (R:ℝ) (f : ℂ→ℂ ): pathIntegral1' f (circlePath c R) = circleIntegral f c R := by
 unfold pathIntegral1'

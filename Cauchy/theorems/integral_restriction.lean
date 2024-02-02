@@ -4,6 +4,9 @@ open unitInterval MeasureTheory
 
 namespace theorems
 
+-- Here we show that the function defined by function extension (which is 0 outside of a given interval) and
+-- keeps its value in the interval, has the same integral as the function.
+
 noncomputable def function_extension {a b : ℝ} (f : Set.Icc a b → ℂ) (x : ℝ) : ℂ :=
   by by_cases x ∈ Set.Icc a b; exact f (⟨x, h⟩); exact 0;
 

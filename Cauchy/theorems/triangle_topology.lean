@@ -8,6 +8,11 @@ import Cauchy.helpers.triangle_topology
 open definitions helpers
 namespace lemmas
 
+--We want to show that the interior of the triangle as we defined it
+--is the same as the topological interior of the set
+
+--First we show that the interior is open
+
 def isOpen_triangle_interior {T : Triangle} (hT : LinIndep T) :
   IsOpen $ TriangularInterior T := by
   rewrite [Metric.isOpen_iff]
@@ -56,6 +61,8 @@ def isOpen_triangle_interior {T : Triangle} (hT : LinIndep T) :
   nth_rewrite 1 [←defz]
   ring
 
+--We now show that there are no open sets which contain points of the boundary and are subsets of the triangle
+--i.e. only the sets contained in the interior can be open
 lemma triangle_boundary_not_open (T : Triangle) (hT : LinIndep T) :
   ∀z ∈ TriangularBoundary T, ¬∃s ⊆ TriangularSet T, IsOpen s ∧ z ∈ s := by
   intro z ⟨a, b, c, gtza, gtzb, gtzc, sum, mulz, defz⟩
@@ -156,6 +163,8 @@ end lemmas
 open lemmas
 namespace theorems
 
+--Now we show that the interior of the triangle set (topologically)
+--is the same as the set we previously called Interior
 def triangle_interior_interior {T : Triangle} (hT : LinIndep T) :
   interior (TriangularSet T) = TriangularInterior T := by
   apply Set.Subset.antisymm

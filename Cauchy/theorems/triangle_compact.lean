@@ -10,6 +10,11 @@ open lemmas
 
 namespace lemmas
 
+--In this file we'll prove that the trianglular set is compact
+-- The proof given now follows the proof found in:
+-- https://math.stackexchange.com/questions/3778799/a-triangle-is-a-compact-set
+
+
 lemma R3_pos_closed : IsClosed R3_Pos := by
   have : R3_Pos = (Set.Ici (0 : ℝ) ×ˢ Set.Ici (0 : ℝ) ×ˢ Set.Ici (0 : ℝ)) := by
     unfold R3_Pos
@@ -93,7 +98,7 @@ lemma triangle_is_image_triangle_point_of_triangle_in_r3 {T : Triangle} :
 end lemmas
 
 namespace theorems
--- proof taken from here https://math.stackexchange.com/questions/3778799/a-triangle-is-a-compact-set
+
 theorem triangle_compact {T : Triangle} : IsCompact $ TriangularSet T := by
   rw [triangle_is_image_triangle_point_of_triangle_in_r3]
   exact IsCompact.image triangle_in_r3_compact continuous_triangle_point

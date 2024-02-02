@@ -14,6 +14,13 @@ import Cauchy.lemmas.zero_le_of_gt_zero
 
 open definitions
 
+--This file "sorries" a version of Cauchy that's intermediate between the original theorem we
+--aimed to prove and the one we proved as "extended Cauchy"
+
+-- The reason for this was to do more work as time was available, and using this as an assumption
+-- to prove extended Cauchy seemed like a reasonable project to tackle. This, as well as the extended
+-- Cauchy was not originally part of the project and it is extra work.
+
 def TriangleDifference (T : Triangle) (sT : SubTriangle T) :=
   (TriangularSet T) \ (TriangularSet sT) ∪ TriangularBoundary sT
 

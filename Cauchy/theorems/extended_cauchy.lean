@@ -18,6 +18,10 @@ import Cauchy.theorems.zero_integral_zero
 
 open definitions lemmas theorems unitInterval
 
+-- In this file we prove an extended version of Cauchy's theorem for triangles. Here the condition
+-- on differentiability is relaxed, from being differentiable in the Domain, to being differentiable
+-- in the domain except for 1 point
+
 theorem extended_cauchy {U : Set ℂ } {T : Triangle} {f : ℂ  → ℂ } {z : ℂ}
   (hz : z ∈ (interior $ TriangularSet T))
   (hU: IsCDomain U) (hT : TriangularBoundary T ⊆ U) (hf : ContinuousOn f U)
