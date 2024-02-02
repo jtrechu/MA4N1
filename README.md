@@ -6,7 +6,7 @@ Proving Cauchy's Theorem on a triangle using Gorsat's method
 
 The file is divided into **7 folders** :
 
-### Connection_with_mathlib
+### Connection with Mathlib
 
 This folder contains files that lay out the equivalence between our code and the code that is already in Mathlib. This code only contains complex integrals over circular paths, and not arbitrary path.
 
