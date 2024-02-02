@@ -8,8 +8,7 @@ import Cauchy.helpers.triangle
 import Cauchy.theorems.triangle_compact
 
 open definitions
-open lemmas Matrix.vecMul
-
+open lemmas
 namespace lemmas
 
 lemma rwsum {a b c : ℝ} : a + b + c = 1 ↔ 1 - a - b = c := by
