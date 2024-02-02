@@ -10,7 +10,7 @@ open Set
 open Nat Real MeasureTheory Set Filter Function intervalIntegral Interval
 open unitInterval
 
-namespace definitions
+namespace oldDefinitions
 
 -- Definitions of pathintegrals with the Path library instead of our own structure of C1Paths
 
@@ -23,4 +23,4 @@ noncomputable def pathIntegral1 {x y : ℂ } (f : ℂ → ℂ) (γ : Path x y) :
 noncomputable def length {x y : ℂ } (γ : Path x y) : ℝ :=
 ∫ t in (0)..(1), Complex.abs ((deriv (Path.extend γ)) t) ∂volume
 
-end definitions
+end oldDefinitions
