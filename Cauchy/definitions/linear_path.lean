@@ -22,7 +22,7 @@ namespace definitions
 
 open definitions unitInterval
 
--- We show that Lean's coercion from ℝ → ℂ is a differentiable function, with a constant (tehrefore continuous) derivative
+-- We show that Lean's coercion from ℝ → ℂ is a differentiable function, with a constant (therefore continuous) derivative
 
 theorem Complex.differentiable_coe : Differentiable ℝ (λ x => ↑x : ℝ → ℂ) := by
   rewrite [Differentiable]

@@ -56,6 +56,3 @@ def coords_as_basis {T : Triangle} (hT : LinIndep T) {z : ℂ} {a b : ℝ}
     (b - ((triangle_basis hT).repr z) 1) this.symm
   simp only [sub_eq_zero] at l
   exact l
-
---def triangle_as_basis (T : Triangle) (hT : LinIndep T) {a b c : ℝ}
- -- (h : )

@@ -8,26 +8,6 @@ import Cauchy.helpers.triangle_topology
 open definitions helpers
 namespace lemmas
 
-def coords_as_basis {T : Triangle} (hT : LinIndep T) {z : ℂ} {a b : ℝ}
-  (hz : a * (T.a - T.c) + b * (T.b - T.c) = z) : a = (triangle_basis hT).repr z 0 ∧
-  b = (triangle_basis hT).repr z 1 := by
-  have r := Basis.sum_repr (triangle_basis hT) z
-  unfold triangle_basis at r ⊢
-  simp only [coe_basisOfLinearIndependentOfCardEqFinrank, Complex.real_smul, Fin.sum_univ_two,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at r
-  have : 0 = (a - (triangle_basis hT).repr z 0) * (T.a - T.c) +
-    (b - (triangle_basis hT).repr z 1) * (T.b - T.c) := by
-    unfold triangle_basis
-    rewrite [←r, ←sub_eq_zero] at hz
-    rewrite [←hz]
-    ring
-  simp only [←Complex.ofReal_sub, ←Complex.real_smul] at this
-  have l := LinearIndependent.pair_iff.1 hT (a - ((triangle_basis hT).repr z) 0)
-    (b - ((triangle_basis hT).repr z) 1) this.symm
-  simp only [sub_eq_zero] at l
-  exact l
-
-
 def isOpen_triangle_interior {T : Triangle} (hT : LinIndep T) :
   IsOpen $ TriangularInterior T := by
   rewrite [Metric.isOpen_iff]
