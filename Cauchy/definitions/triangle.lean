@@ -66,7 +66,7 @@ lemma perimeter_nonneg (triangle : Triangle) : perimeter triangle ≥ 0 := by
   repeat apply add_nonneg
   all_goals apply dist_nonneg
 
--- Now we define the set of points that conform the triangle:
+-- Now we define the set of points that are contained by the triangle:
 
 def TriangularSet (triangle : Triangle) : Set ℂ :=
   {z | ∃ (t₁ t₂ t₃ : ℝ), t₁ ≥ 0 ∧ t₂ ≥ 0 ∧ t₃ ≥ 0 ∧
