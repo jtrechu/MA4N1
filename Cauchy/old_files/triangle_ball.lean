@@ -16,6 +16,11 @@ import Cauchy.integral_zero.triangle_sequence
 import Cauchy.helpers.triangle
 
 open definitions lemmas helpers.triangle
+
+-- This was the first attempt at showing we can get a triangle as small as we want it to be.
+
+-- It was done by giving an specific radius for the ball that contained the triangle
+
 lemma triangle_in_ball (t : Triangle) (z : ℂ) (h: z ∈ TriangularSet t):
 TriangularSet t ⊆ Metric.closedBall z (perimeter t) := by
 intro x xt

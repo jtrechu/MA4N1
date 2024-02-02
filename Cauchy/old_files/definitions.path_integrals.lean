@@ -12,6 +12,8 @@ open unitInterval
 
 namespace definitions
 
+-- Definitions of pathintegrals with the Path library instead of our own structure of C1Paths
+
 noncomputable def aux {x y : ℂ } (f : ℂ → ℂ) (γ : Path x y) : ℝ  → ℂ :=
  (Function.comp f (Path.extend γ)) * (deriv (Path.extend γ))
 

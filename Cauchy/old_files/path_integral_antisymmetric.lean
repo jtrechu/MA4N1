@@ -5,13 +5,13 @@ import Mathlib.Data.Complex.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Analysis.Normed.Field.Basic
-import Cauchy.definitions.path_integrals
-import Cauchy.helpers.path_integrals
+import Cauchy.old_files.path_integrals
+import Cauchy.old_files.path_integrals
 
 open definitions intervalIntegral MeasureTheory unitInterval helpers
 
---- We'll now show that doing an integral over the symmetric path is
---- equivalent to changing the sign of the integral:
+--This file proved that going through a path in opposite direction only affected
+-- the path integral by changing the sign. (For the Path library not C1Paths)
 
 lemma pathIntegral_antisymmetric {x y : ℂ } (f: ℂ → ℂ) (γ : Path x y) :
 (pathIntegral1 f (Path.symm γ)) = -(pathIntegral1 f γ) := by

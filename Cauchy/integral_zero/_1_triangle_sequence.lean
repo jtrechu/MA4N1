@@ -16,19 +16,35 @@ import Cauchy.theorems.triangle_interior
 
 open definitions lemmas Classical theorems
 
+--This file deals with the creation of the sequence of triangles used in the proof.
+-- Given a Triangle Tₙ we want Tₙ₊₁ which we define to be the triangle with the biggest norm of
+-- the path integral out of the 4 subtriangles of Tₙ
+
+
 variable {U : Set ℂ} (f : ℂ → ℂ) (T : Triangle) (hU : IsCDomain U)
   (h₁ : DifferentiableOn ℂ f U) (h₂: TriangularBoundary T ⊆ U)
+
+-- The point of using this sequence is that we can apply the fact that a+b+c+d ≤ 4max(a,b,c,d).
+-- Which is the following inequality:
 
 def subtriangle_mean_inequality := abs_ge_sum_4
   (trianglePathIntegral f (subTriangleA T)) (trianglePathIntegral f (subTriangleB T))
   (trianglePathIntegral f (subTriangleC T)) (trianglePathIntegral f (subTriangleD T))
   (by symm; apply triangleIntegral' f T h₁ h₂)
 
+-- The following definition picks a triangle out of the four subtriangles
+-- it'll pick one for which it holds that the patch integral is
+-- bigger than 1/4 of the path integral in the triangle
+
 noncomputable def selectSubtriangle : SubTriangle T :=
        (Or.by_cases (subtriangle_mean_inequality f T h₁ h₂) (λ_=>subTriangleA T)
   λh => Or.by_cases                  h                      (λ_=>subTriangleB T)
   λh => Or.by_cases                  h                      (λ_=>subTriangleC T)
                                                              λ_=>subTriangleD T)
+
+-- Now that we can repeat this process as much as we want, we define
+-- the sequence in which the (n+1)th term is the result of applying
+-- selectSubtriangle to the nth term
 
 structure SequenceItem where
   triangle : Triangle
@@ -44,6 +60,9 @@ noncomputable def triangleSequence (n : ℕ) : SequenceItem (U:=U) := by
     apply subset_trans
     apply subtriangle_subset'
     exact triangle_interior_contained ph₂ hU
+
+--Now we apply the norm in our sequence to get that the integral over the n-th triangle is bigger
+--than 4⁻ⁿ times the integral over the original triangle:
 
 lemma triangleSequence_apply (n : ℕ) :
    ‖trianglePathIntegral f (triangleSequence f T hU h₁ h₂ n).triangle‖ ≥ ‖trianglePathIntegral f T‖/(4^n) := by
@@ -75,6 +94,10 @@ lemma triangleSequence_apply (n : ℕ) :
       Real.rpow_add_one, ge_iff_le, div_mul_eq_div_div]
     exact i
     any_goals linarith
+
+--We now do something similar but with the perimeter, showing that the perimeter of the nth triangle
+--of the sequence is 2⁻ⁿ times the perimeter of the original triangle, first we prove a trivial
+-- result needed for the proof
 
 lemma aux (a:ℝ) (n:ℝ) (h: n≥0): (a/2 ^ ↑n) / 2 = a/2^(↑n+1) := by
   field_simp
@@ -108,6 +131,9 @@ lemma triangleSequence_perim (n : ℕ) :
       rw[aux (perimeter T)]
       aesop
       exact (Nat.cast_nonneg n)
+
+--Lastly we show that given the sequence of triangles there is a point z that is common to all the
+--triangles of the sequence, this is ∃z ∈ ⋂ᵢⁿ(Tᵢ) ∀n
 
 lemma triangleSequence_common_point :
   ∃z, ∀n, z ∈ (TriangularSet $ (triangleSequence f T hU h₁ h₂ n).triangle) := by

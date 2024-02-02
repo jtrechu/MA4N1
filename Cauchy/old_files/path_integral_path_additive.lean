@@ -5,14 +5,14 @@ import Mathlib.Data.Complex.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Analysis.Normed.Field.Basic
-import Cauchy.definitions.path_integrals
-import Cauchy.helpers.path_integrals
+import Cauchy.old_files.path_integrals
+import Cauchy.old_files.path_integrals
 
 open definitions intervalIntegral MeasureTheory unitInterval helpers
 
---- Here we show that the Path Integral is additive over the path:
---- ∫_γ f +∫_α f  = ∫_(γ⬝α) f :
-
+-- Here we show that the Path Integral is additive over the path:
+-- ∫_γ f +∫_α f  = ∫_(γ⬝α) f :
+-- This was done for the Path Library, before the C1Paths were created
 lemma pathIntegral_path_additivity {x y z : ℂ} (f : ℂ → ℂ) (γ : Path x y) (α : Path y z)
   (haux₁: IntervalIntegrable (aux f γ) volume 0 1)
   (haux₂: IntervalIntegrable (aux f α) volume 0 1):

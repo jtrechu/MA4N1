@@ -21,7 +21,7 @@ import Cauchy.theorems.triangle_interior
 --between z_0 and any point on the boundary w we had that |(z-z_0)/(w-z_0)|<1 and we could do a series expansion.
 --This is not actually true for triangles, and the proof doesn't follow from Cauchy's theorem on triangles.
 
---This proofs are left as proof of the work that was done
+--This proofs are left as a way to show the work that was done
 
 open definitions lemmas helpers.triangle sorrylemmas theorems
 variable {U : Set ℂ}

@@ -7,6 +7,8 @@ import Cauchy.definitions.path_integrals
 
 namespace helpers
 
+--Work done on linear paths prior to the change to C1 Paths
+
 open unitInterval
 
 def ComplexPath := Path (X := ℂ)
@@ -30,7 +32,7 @@ lemma trans_linear (a b : ℂ) : Path.trans (linear_path_a_b a (0.5*(a+b))) ((li
   aesop
   funext
   aesop
-  rw[Path.extend_extends] 
+  rw[Path.extend_extends]
   aesop
   ring_nf
   norm_num
@@ -40,7 +42,7 @@ lemma trans_linear (a b : ℂ) : Path.trans (linear_path_a_b a (0.5*(a+b))) ((li
   exact⟨left,h2⟩
   funext
   aesop
-  rw[Path.extend_extends] 
+  rw[Path.extend_extends]
   aesop
   ring_nf
   norm_num

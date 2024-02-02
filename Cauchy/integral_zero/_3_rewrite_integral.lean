@@ -20,6 +20,10 @@ open definitions lemmas theorems
 variable {U : Set ℂ} (f : ℂ → ℂ) (T : Triangle) (hU : IsCDomain U)
   (h₁ : DifferentiableOn ℂ f U) (h₂: TriangularBoundary T ⊆ U)
 
+-- The objective of this file is to show that the path integral won't change by adding a certain
+-- polynomial term to it. This is because a polynomial has an antiderivative and so by the
+-- fundamental theorem of calculus (also proven) the integral over any closed path is zero.
+
 lemma integral_as_deriv (w : ℂ) :
   ‖trianglePathIntegral f T‖ = ‖trianglePathIntegral (λz => f z - f w - (z - w)*deriv f w) T‖ := by
   apply congrArg

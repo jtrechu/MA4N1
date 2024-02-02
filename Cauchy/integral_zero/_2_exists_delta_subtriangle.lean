@@ -9,8 +9,15 @@ import Cauchy.lemmas.pow_seq_to_zero
 
 open definitions lemmas Classical theorems
 
+--In this file we keep proving more results on our triangle sequence
+
 variable {U : Set ℂ} (f : ℂ → ℂ) (T : Triangle) (hU : IsCDomain U)
   (h₁ : DifferentiableOn ℂ f U) (h₂: TriangularBoundary T ⊆ U)
+
+-- We prove that for any δ>0 we can find a triangle in the sequence s.t. any two points on
+-- this triangles would be closer than δ.
+-- The idea of the proof is that the perimeter is perim(T)/2ⁿ and so goes to zero, and any two points
+-- in a triangle are closer than its perimeter
 
 lemma exists_subtriangle_delta (w : ℂ) (hw : ∀n, w ∈ TriangularSet (triangleSequence f T hU h₁ h₂ n).triangle)
   : ∀δ>0, ∃n:ℕ, ∀z ∈ TriangularSet $ (triangleSequence f T hU h₁ h₂ n).triangle,

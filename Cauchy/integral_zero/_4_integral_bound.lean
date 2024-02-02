@@ -28,6 +28,10 @@ open definitions lemmas theorems unitInterval
 variable {U : Set ℂ} (f : ℂ → ℂ) (T : Triangle) (hU : IsCDomain U)
   (h₁ : DifferentiableOn ℂ f U) (h₂: TriangularBoundary T ⊆ U)
 
+--In this file we show that there is an upper bound on the TriangleIntegral that depends on
+--an arbitrary ε. This is what then will be used to show that since the norm of a triangleIntegral
+--is smaller than ε * Constant for all positive ε, then the norm will be zero.
+
 lemma normed_integral_bound : ∀ε>0, ∃n:ℕ,
   ‖trianglePathIntegral f (triangleSequence f T hU h₁ h₂ n).triangle‖ ≤
   ε*(perimeter (triangleSequence f T hU h₁ h₂ n).triangle)^2 := by
