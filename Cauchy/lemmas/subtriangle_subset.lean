@@ -11,6 +11,9 @@ open helpers
 
 namespace lemmas
 
+--The aim of this file is to show that the relation Triangle sub-Triangle holds for the sets
+--So that triangularSet(subT) ⊆ triangularSet(T)
+
 lemma subtriangle_subset' {T : Triangle } (sT : SubTriangle T) :
   TriangularSet sT ⊆ TriangularSet T := by
     have {a := sTa, b := sTb, c := sTc, ha, hb, hc} := sT

@@ -7,8 +7,9 @@ import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Analysis.Normed.Field.Basic
 import Cauchy.old_files.path_integrals
 import Cauchy.old_files.path_integrals
+import Cauchy.old_files.dpath_integrals
 
-open definitions intervalIntegral MeasureTheory unitInterval helpers
+open oldDefinitions intervalIntegral MeasureTheory unitInterval helpers
 
 -- Here we show that the Path Integral is additive over the path:
 -- ∫_γ f +∫_α f  = ∫_(γ⬝α) f :

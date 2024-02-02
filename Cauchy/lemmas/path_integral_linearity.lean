@@ -16,24 +16,8 @@ open definitions intervalIntegral MeasureTheory unitInterval lemmas theorems
 
 namespace lemmas
 
---- Here we show that the Path Integral is additive over the function:
---- ∫_γ f + ∫_γ g = ∫_γ (f + g)
-
--- lemma pathIntegral_function_additivity {x y : ℂ } (f g : ℂ → ℂ) (γ : Path x y)
--- (haux₁: IntervalIntegrable (aux f γ) volume 0 1)
--- (haux₂: IntervalIntegrable (aux g γ) volume 0 1) :
--- (pathIntegral1 f γ) + (pathIntegral1 g γ) = (pathIntegral1 (f+g) γ) := by
---   unfold pathIntegral1
---   rw[← intervalIntegral.integral_add]
---   unfold aux
---   have : ∀ x ∈ (Set.uIcc 0 1), (f ∘ Path.extend γ * deriv (Path.extend γ)) x + (g ∘ Path.extend γ * deriv (Path.extend γ)) x = ((f + g) ∘ Path.extend γ * deriv (Path.extend γ)) x := by
---     intro x
---     simp
---     rw[add_mul]
---     aesop
---   rw[integral_congr this]
---   · exact haux₁
---   · exact haux₂
+-- Here we show that the Path Integral is additive over the function:
+-- ∫_γ f + ∫_γ g = ∫_γ (f + g)
 
 lemma pathIntegral_additive {U : Set ℂ} (f g : ℂ → ℂ) (γ : C1Path)
   (hf : DifferentiableOn ℂ f U) (hg : DifferentiableOn ℂ g U) (hγ : γ '' I ⊆ U) :
@@ -47,6 +31,8 @@ lemma pathIntegral_additive {U : Set ℂ} (f g : ℂ → ℂ) (γ : C1Path)
   aesop
   exact aux_integrable f hf γ hγ
   exact aux_integrable g hg γ hγ
+
+-- We now apply this result to triangleIntegrals (which is just a particular case of pathIntegrals)
 
 lemma triangleIntegral_additive {U : Set ℂ} (hU : IsCDomain U) (T : Triangle) (hT : TriangularBoundary T ⊆ U)
   (f g : ℂ → ℂ) (hf : DifferentiableOn ℂ f U) (hg : DifferentiableOn ℂ g U) :
@@ -65,6 +51,8 @@ lemma triangleIntegral_additive {U : Set ℂ} (hU : IsCDomain U) (T : Triangle) 
     try any_goals exact T.contains_c
     exact triangle_interior_contained hT hU
 
+--We now show that just like with regular integrals multiplying constants can
+--be taken out of the integral for a ∈ ℂ we have ∫ₐ(c⬝f) = c⬝∫ₐf
 
 lemma pathIntegral_scalar (c : ℂ) (f : ℂ → ℂ) (γ : C1Path) :
   pathIntegral1' (λz => c*f z) γ = c * pathIntegral1' f γ := by
@@ -77,11 +65,16 @@ lemma pathIntegral_scalar (c : ℂ) (f : ℂ → ℂ) (γ : C1Path) :
   rewrite [intervalIntegral.integral_mul_const]
   ring
 
+--We now apply this result to triangleIntegrals
+
 lemma triangleIntegral_scalar (T : Triangle) (c : ℂ) (f : ℂ → ℂ) :
   trianglePathIntegral (λz => c*f z) T = c * trianglePathIntegral f T := by
   repeat rewrite [trianglePathIntegral_apply]
   repeat rewrite [pathIntegral_scalar c f]
   ring
+
+-- Here we show that the Path Integral works well with substraction:
+-- ∫_γ f - ∫_γ g = ∫_γ (f - g)
 
 lemma pathIntegral_subtract {U : Set ℂ} (f g : ℂ → ℂ) (γ : C1Path)
   (hf : DifferentiableOn ℂ f U) (hg : DifferentiableOn ℂ g U) (hγ : γ '' I ⊆ U) :
@@ -95,6 +88,8 @@ lemma pathIntegral_subtract {U : Set ℂ} (f g : ℂ → ℂ) (γ : C1Path)
   aesop
   exact aux_integrable f hf γ hγ
   exact aux_integrable g hg γ hγ
+
+--We now apply this result to triangleIntegrals
 
 lemma triangleIntegral_subtract {U : Set ℂ} (hU : IsCDomain U) (T : Triangle) (hT : TriangularBoundary T ⊆ U)
   (f g : ℂ → ℂ) (hf : DifferentiableOn ℂ f U) (hg : DifferentiableOn ℂ g U) :

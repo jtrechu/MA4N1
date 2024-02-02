@@ -10,6 +10,9 @@ open lemmas
 
 namespace lemmas
 
+-- This file aims to prove that any two points in a triangular set, are closer than the perimeter
+-- of the Triangle. (given T, ||a-b|| ≤ perimeter(T) for any two a,b ∈ TriangularSet (T) )
+
 lemma dist_tri_leq_perimeter (T : Triangle) (a b : ℂ) :
   a ∈ TriangularSet T ∧ b ∈ TriangularSet T → dist b a ≤ perimeter T := by
   rewrite [dist_eq_norm]
@@ -22,7 +25,7 @@ lemma dist_tri_leq_perimeter (T : Triangle) (a b : ℂ) :
     have a3eq : a₃ = 1 - a₁ - a₂ := by rw [←eqa1]; ring
     have b3eq : b₃ = 1 - b₁ - b₂ := by rw [←eqb1]; ring
     rewrite [defa, defb, a3eq, b3eq]
-    simp -- this simp is necessary, as it moves coercions inside allowing ring to function!
+    simp -- this simp is necessary, as it moves coercions inside allowing ring to function
     ring
 
   rewrite [this]
@@ -32,14 +35,14 @@ lemma dist_tri_leq_perimeter (T : Triangle) (a b : ℂ) :
   repeat rewrite [norm_mul]
 
   have bounded1 : ‖b₁-a₁‖ ≤ 1 := by -- have to repeat the proof twice, unfortunate but necessary
-    have bbound : b₁ ≤ 1 := by linarith -- (I think!)
+    have bbound : b₁ ≤ 1 := by linarith
     have abound : a₁ ≤ 1 := by linarith
     rewrite [Real.norm_eq_abs, ←max_sub_min_eq_abs, sub_le_iff_le_add']
     apply le_trans
     exact max_le abound bbound
     simp
     exact ⟨gtza1, gtzb1⟩
-  have bounded2 : ‖b₂-a₂‖ ≤ 1 := by -- the proof would be fairly compact without them... :(
+  have bounded2 : ‖b₂-a₂‖ ≤ 1 := by -- the proof would be fairly compact without them
     have bbound : b₂ ≤ 1 := by linarith
     have abound : a₂ ≤ 1 := by linarith
     rewrite [Real.norm_eq_abs, ←max_sub_min_eq_abs, sub_le_iff_le_add']
@@ -51,12 +54,12 @@ lemma dist_tri_leq_perimeter (T : Triangle) (a b : ℂ) :
   rewrite [Complex.norm_eq_abs (T.a - T.c), Complex.norm_eq_abs (T.b - T.c)]
   repeat rewrite [←Complex.dist_eq]
   rewrite [Complex.instNormedFieldComplex.dist_comm T.b]
-  repeat rewrite [complex_real_norm_equiv] -- actually quite an important line (type conversions!)
+  repeat rewrite [complex_real_norm_equiv] -- actually quite an important line (type conversions related issues)
   have leq1 : ‖b₁ - a₁‖ * dist T.a T.c ≤ dist T.a T.c := by
     exact mul_le_of_le_one_left (by exact dist_nonneg) bounded1
   have leq2 : ‖b₂ - a₂‖ * dist T.c T.b ≤ dist T.c T.b := by
     exact mul_le_of_le_one_left (by exact dist_nonneg) bounded2
-  apply le_trans -- these two lines are unnecessary, but I do so much heavy lifting
-  exact add_le_add leq1 leq2 -- that it's unfair for linarith to take all the credit for it!
+  apply le_trans
+  exact add_le_add leq1 leq2
   have : dist T.b T.a ≥ 0 := by exact dist_nonneg
   linarith only [this]

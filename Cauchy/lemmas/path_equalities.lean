@@ -17,6 +17,14 @@ import Cauchy.helpers.inequalities
 
 open definitions unitInterval theorems helpers lemmas
 
+--The aim of this file is to gather all results that are useful when working with paths
+--Most of this are obvious results when doing proofs on paper, but one can't just go as
+--simply over them when using Lean
+
+-- We now show that it is the same to sum the integrals of two piece-wise paths, that to consider
+--the integral of the piece-wise path that results from joining the piece-wise paths
+--(what we called extend the paths) So ∫ₐf + ∫ₙf = ∫ₐ₊ₙ f
+
 lemma piecewisepath_extend_additive {n m : ℕ} (f : ℂ → ℂ) (p : PiecewisePath n) (q : PiecewisePath m) :
   pathIntegral1 f (p.extend q) = pathIntegral1 f p + pathIntegral1 f q := by
   conv_lhs => {
@@ -24,6 +32,9 @@ lemma piecewisepath_extend_additive {n m : ℕ} (f : ℂ → ℂ) (p : Piecewise
     rewrite [Fin.sum_univ_add]
     tactic => aesop
   }
+
+--We now show that the linear changes to the parameters that we discussed do mnot affect the values
+--of the integral when the bounds are acordingly shifted
 
 lemma unit_scale_invariance (f : ℂ → ℂ) (γ : C1Path) (scale offset : I)
   (ho : offset ≤ (1:ℝ) - scale) (hs : scale ≠ 0) :
@@ -92,6 +103,10 @@ lemma unit_scale_invariance (f : ℂ → ℂ) (γ : C1Path) (scale offset : I)
   }
   all_goals aesop
 
+--We now show that the path integral over a C¹ Path is the same as the path integral over the Piece-wise path
+--that results from splitting the C¹ path into two
+--useful since it shows that PathIntegral1 and PathIntegral1' behave well together
+
 theorem split_equality {U : Set ℂ} (f : ℂ → ℂ) (h : DifferentiableOn ℂ f U)
   (γ : C1Path) (hγ : γ '' I ⊆ U) :
   pathIntegral1' f γ = pathIntegral1 f (γ.split split) := by
@@ -111,6 +126,9 @@ theorem split_equality {U : Set ℂ} (f : ℂ → ℂ) (h : DifferentiableOn ℂ
   . exact aux_integrable f h γ hγ
   . rewrite [Set.uIcc_subset_uIcc_iff_mem]
     simp; exact ⟨le_of_lt split.2.1, le_of_lt split.2.2⟩
+
+-- We now show that the effect of the direction of the path is only the sign of the integral
+-- So ∫₋ₐ f = - ∫ₐf
 
 theorem reverse_pathIntegral_neg (f : ℂ → ℂ) (γ : C1Path) :
   pathIntegral1' f γ.reverse = -pathIntegral1' f γ := by

@@ -12,6 +12,11 @@ namespace lemmas
 
 open Metric
 
+-- In this file we show the caracterization of differentiability of a function
+-- using ε δ. From the ε,δ definition of the limit (f (w) - f(z)) /(w-z) → f'(w) as w → z
+
+--We want to get that ∀ε>0, ∃δ such that ‖w-z‖ < δ implies ‖f(w) - f(z) - (w-z) * (f'(z))‖ ≤ ε * ‖w-z‖
+
 lemma deriv_epsilon_delta {z : ℂ} {f : ℂ → ℂ} (hf : DifferentiableAt ℂ f z) :
   ∀ε>0, ∃δ>0, ∀w : ℂ, ‖w-z‖ < δ → ‖f w - f z - (w-z) * deriv f z‖ ≤ ε * ‖w-z‖ := by
   intro e he

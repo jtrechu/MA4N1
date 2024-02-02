@@ -28,6 +28,12 @@ import Cauchy.helpers.triangle_integral_helper
 
 open trianglehelper definitions helpers theorems intervalIntegral unitInterval
 
+-- In this file we show that the path integral over a triangle is the same as adding together the
+-- path integrals of its 4 labeled subtriangles (subtriangles A,B,C and D) as defined in definitions/subtriangles.
+
+--To make this proof cleaner, it consists on a series of re-writes using helpers defined in the file
+-- helpers/triangle_integral_helper
+
 lemma triangleIntegral {U : Set ℂ} (f : ℂ → ℂ) (t : Triangle)  (h₁ : DifferentiableOn ℂ f U) (h₂: TriangularBoundary t ⊆ U) :
   pathIntegral1 f t.path = pathIntegral1 f (subTriangleA t).path + pathIntegral1 f (subTriangleB t).path + pathIntegral1 f (subTriangleC t).path +pathIntegral1 f (subTriangleD t).path := by
   repeat rewrite[PiecewisePath.path_integral_three]

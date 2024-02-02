@@ -12,6 +12,10 @@ import Init.Data.Float
 open definitions
 namespace lemmas
 
+-- In this file we prove that the perimeter of the subtriangles A,B,C and D are half of the
+-- original triangle's perimeter
+
+--We show it for subtriangle A now
 
 lemma perim_subtriangleA_is_half_triangle {T : Triangle}
   : perimeter (subTriangleA T) = ( perimeter T)/2 := by
@@ -39,6 +43,8 @@ lemma perim_subtriangleA_is_half_triangle {T : Triangle}
   calc ‖T.a / 2 + T.b / 2 - T.a‖ + ‖T.a / 2 + T.c / 2 - (T.a / 2 + T.b / 2)‖ + ‖T.a - (T.a / 2 + T.c / 2)‖ = ‖(-T.a + T.b)/ 2‖ + ‖( T.c -  T.b) / 2‖ + ‖(T.a -  T.c) / 2‖ := by ring
   _ = ‖(-T.a + T.b)‖ / ‖(2 : ℂ)‖ + ‖( T.c -  T.b)‖ / ‖(2 : ℂ)‖ + ‖(T.a -  T.c)‖ / ‖(2 : ℂ)‖  := by repeat rw[norm_div]
   _ =  (‖T.b - T.a‖ + ‖T.c - T.b‖ + ‖T.a - T.c‖) / 2 := by repeat rw[h_norm_2_is_2]; ring
+
+ --We show it for subtriangle B now
 
  lemma perim_subtriangleB_is_half_triangle {T : Triangle}
   : perimeter (subTriangleB T) = ( perimeter T)/2 := by
@@ -68,6 +74,8 @@ lemma perim_subtriangleA_is_half_triangle {T : Triangle}
   _ = ‖(-T.a + T.b)‖ / ‖(2 : ℂ)‖ + ‖( T.c -  T.b)‖ / ‖(2 : ℂ)‖ + ‖(T.a -  T.c)‖ / ‖(2 : ℂ)‖  := by repeat rw[norm_div]
   _ =  (‖T.b - T.a‖ + ‖T.c - T.b‖ + ‖T.a - T.c‖) / 2 := by repeat rw[h_norm_2_is_2]; ring
 
+--We show it for subtriangle C now
+
 lemma perim_subtriangleC_is_half_triangle {T : Triangle}
   : perimeter (subTriangleC T) = ( perimeter T)/2 := by
   have h_sTa_eq_half_Ta_plus_Tc : (subTriangleC T).toTriangle.a = T.a/2 +T.c/2 := by
@@ -93,6 +101,8 @@ lemma perim_subtriangleC_is_half_triangle {T : Triangle}
   calc ‖T.b / 2 + T.c / 2 - (T.a / 2 + T.c / 2)‖ + ‖T.c - (T.b / 2 + T.c / 2)‖ + ‖T.a / 2 + T.c / 2 - T.c‖ = ‖(-T.a + T.b)/ 2‖ + ‖( T.c -  T.b) / 2‖ + ‖(T.a -  T.c) / 2‖ := by ring
   _ = ‖(-T.a + T.b)‖ / ‖(2 : ℂ)‖ + ‖( T.c -  T.b)‖ / ‖(2 : ℂ)‖ + ‖(T.a -  T.c)‖ / ‖(2 : ℂ)‖  := by repeat rw[norm_div]
   _ =  (‖T.b - T.a‖ + ‖T.c - T.b‖ + ‖T.a - T.c‖) / 2 := by repeat rw[h_norm_2_is_2]; ring
+
+--We show it for subtriangle D now
 
 lemma perim_subtriangleD_is_half_triangle {T : Triangle}
   : perimeter (subTriangleD T) = ( perimeter T)/2 := by

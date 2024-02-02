@@ -12,6 +12,8 @@ open definitions
 
 namespace lemmas
 
+-- Firstly we prove that ε-triangles as we have defined them are not segments, nor points (i.e. they are linearly independent)
+
 lemma eps_subtriangle_linindep (T : Triangle) (z : ℂ) (hz : z ∈ (interior $ TriangularSet T))
   (ε : ℝ) (hε : ε > 0) : LinIndep $ eps_subtriangle z hz ε hε := by
   unfold LinIndep eps_subtriangle
@@ -38,6 +40,9 @@ lemma eps_subtriangle_linindep (T : Triangle) (z : ℂ) (hz : z ∈ (interior $ 
   convert hst.symm
   rewrite [false_iff]
   exact this
+
+-- We now prove that if we build an ε-triangle around the point z, z will not only be in the ε-triangle
+-- but it will also be in the interior of the ε-triangle
 
 lemma eps_subtriange_mem_interior (T : Triangle) (z : ℂ) (hz : z ∈ (interior $ TriangularSet T))
   (ε : ℝ) (hε : ε > 0) : z ∈ (TriangularInterior $ eps_subtriangle z hz ε hε) := by

@@ -6,9 +6,8 @@ import Mathlib.MeasureTheory.Integral.IntervalIntegral
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Analysis.Normed.Field.Basic
 import Cauchy.old_files.path_integrals
-import Cauchy.old_files.path_integrals
-
-open definitions intervalIntegral MeasureTheory unitInterval helpers
+import Cauchy.old_files.dpath_integrals
+open oldDefinitions intervalIntegral MeasureTheory unitInterval helpers
 
 --This file proved that going through a path in opposite direction only affected
 -- the path integral by changing the sign. (For the Path library not C1Paths)

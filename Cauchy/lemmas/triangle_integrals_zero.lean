@@ -34,7 +34,12 @@ import Cauchy.theorems.triangle_interior
 
 open definitions helpers unitInterval lemmas theorems
 
+-- In this file we'll show, by applying the complex FTC, that some basic functions have
+-- a zero integral over the triangle
+
 variable {U : Set ℂ} (T : Triangle) (hU : IsCDomain U) (h₂: TriangularBoundary T ⊆ U)
+
+-- We firstly show that a constant has integral 0 over the triangle
 
 lemma const_integral_zero (c : ℂ) : trianglePathIntegral (λ_ => c) T = 0 := by
   rewrite [trianglePathIntegral_apply]
@@ -60,6 +65,8 @@ lemma const_integral_zero (c : ℂ) : trianglePathIntegral (λ_ => c) T = 0 := b
     apply DifferentiableOn.const_mul
     exact differentiableOn_id
   any_goals exact differentiableAt_id
+
+-- We now show that a constant times the identity has integral 0 over the triangle
 
 lemma const_mul_integral_zero (c : ℂ) : trianglePathIntegral (λz => c*z) T = 0 := by
   rewrite [trianglePathIntegral_apply]

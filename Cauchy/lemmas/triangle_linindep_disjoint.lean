@@ -11,6 +11,10 @@ open definitions
 open lemmas
 namespace lemmas
 
+-- The aim of this file is to prove results that will be useful when working with linear independence
+
+--Firstly we prove some trivial calculations written as iff statements
+
 lemma rwsum {a b c : ℝ} : a + b + c = 1 ↔ 1 - a - b = c := by
   constructor
   all_goals
@@ -43,6 +47,8 @@ lemma rwdef' {A B C : ℂ} (a c : ℝ) :
     rewrite [h]
     ring
 
+--We now show that we can check linear independence for different vectors (sides of the triangle)
+
 lemma linindep_basis_change (T : Triangle) :
   LinIndep T → LinearIndependent ℝ ![T.a - T.b, T.c - T.b] := by
   unfold LinIndep
@@ -51,6 +57,9 @@ lemma linindep_basis_change (T : Triangle) :
   have r := LinearIndependent.linear_combination_pair_of_det_ne_zero h this
   simp at r
   exact r
+
+-- Now we show that for triangles that are not trivial (neither segments nor points) the Interior and
+-- the Boundary of the triangle are disjoint sets
 
 lemma triangle_disjoint_if_linindep (T : Triangle) :
   LinIndep T → Disjoint (TriangularBoundary T) (TriangularInterior T) := by

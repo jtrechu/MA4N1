@@ -19,14 +19,14 @@ import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Data.Set.Intervals.UnorderedInterval
 import Mathlib.MeasureTheory.Integral.SetIntegral
 
--- Maybe there are more imports than what we actually need for this lemma, but it doesn't matter
--- I'll have another look at it and remove all the unnecesary imports
+-- This file's aim is to prove the fundamental theorem of calculus for Path Integrals
 
 open definitions lemmas theorems
 
 open Set
 open Nat Real MeasureTheory Set Filter Function intervalIntegral Interval unitInterval
 
+--We show that if we have an antiderivative of f, F, then the path integral over a C1Path γ will be F(γ(1))-F(γ(0))
 
 lemma complex_ftc' {f : ℂ → ℂ} {F : ℂ → ℂ} {U : Set ℂ} {γ : C1Path} (hU : IsOpen U) (hγ : γ '' I ⊆ U)
   (hf : DifferentiableOn ℂ f U) (hF : DifferentiableOn ℂ F U) (hfs : deriv F = f) :

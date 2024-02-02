@@ -16,6 +16,9 @@ open definitions MeasureTheory unitInterval
 
 namespace lemmas
 
+--The aim of this file is to show that the 'aux' function used in the
+--definition of PathIntegral1 is integrable
+
 lemma aux_integrable {U : Set ℂ} (f : ℂ → ℂ) (h : DifferentiableOn ℂ f U)
   (γ : C1Path) (hγ : γ '' I ⊆ U):
   IntervalIntegrable (aux f γ) volume 0 1 := by

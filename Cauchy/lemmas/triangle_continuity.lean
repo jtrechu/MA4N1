@@ -8,6 +8,9 @@ open helpers.triangle
 
 namespace lemmas
 
+--The aim of this file is to show that the operation TrianglePoint that gave us the coordinates of
+--the points of the triangle with the vertices as basis.
+
 lemma continuous_add_components : Continuous AddComponents := by
   unfold AddComponents
   repeat apply Continuous.add

@@ -10,6 +10,9 @@ open definitions unitInterval
 
 namespace lemmas
 
+-- Here we show that the triangular set is a convex set. This is that given any two points of the set
+-- the segment between the points is also contained in the triangular set
+
 lemma linear_path_contained (T : Triangle) (a b : ℂ) (ha : a ∈ TriangularSet T)
   (hb : b ∈ TriangularSet T) : (LinearPath.mk a b) '' I ⊆ TriangularSet T := by
   unfold TriangularSet at ha hb ⊢

@@ -10,6 +10,10 @@ namespace lemmas
 
 open lemmas
 
+--We will show certain limits that will be useful for the inequalities with triangles
+
+--We show something equivalent to the fact that lim(n→-∞) (a⬝xⁿ) for x>1
+
 lemma pow_zseq_to_zero (a x : ℝ) (hx : x > 1) : ∀ε > 0, ∃(n:ℤ), n ≤ 0 ∧ a*x^n < ε := by
   intro e he
   by_cases a <= 0
@@ -32,6 +36,8 @@ lemma pow_zseq_to_zero (a x : ℝ) (hx : x > 1) : ∀ε > 0, ∃(n:ℤ), n ≤ 0
   apply Real.rpow_pos_of_pos
   linarith
   aesop
+
+--We now show the same but with x in the denominator and positive exponent, which is equivalent
 
 lemma pow_seq_to_zero (a x : ℝ) (hx : x > 1) : ∀ε > 0, ∃n:ℕ, a/x^(n:ℝ) < ε := by
   intro e he

@@ -138,7 +138,8 @@ lemma triangle_union (T : Triangle) :
             Ne.lt_of_le (Ne.symm nc) gtzc, sum, defx⟩
   . exact Set.union_subset boundary_in_set interior_in_set
 
---We now show that if a triangle is linearly independent then it is distinct
+--We now show that if a triangle is linearly independent then it is distinct, since two of the sides are not
+--paralel and therefore the triangle is neither a segment nor a point
 
 def LinIndep (T : Triangle) : Prop :=
   LinearIndependent ℝ ![T.a-T.c, T.b-T.c]
