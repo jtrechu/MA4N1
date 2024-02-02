@@ -12,9 +12,15 @@ import Cauchy.helpers.triangle
 
 open definitions
 
+-- In this file our aim is to build subtriangles of T, that contain a point z∈triangularSet T and that has a perimeter as small
+-- as we want it to be
+
 namespace definitions
 
 variable {T : Triangle}
+
+-- We show that for any point in the interior of a triangle there exists a metirc ball centered in said point that is also
+-- in the interior of the triangle
 
 lemma exists_point_around (z : ℂ) (hz : z ∈ (interior $ TriangularSet T)) :
   ∃ε > 0, Metric.ball z ε ⊆ interior (TriangularSet T)
@@ -33,6 +39,11 @@ lemma point_around_apply (z : ℂ) (hz : z ∈ (interior $ TriangularSet T)) :
 lemma ineq : Real.sqrt (4 * 4 + 1)/18 < 1 := by
   rewrite [div_lt_one, Real.sqrt_lt']
   all_goals norm_num
+
+--Our aim now is constructing arbitrarily small triangles, this is, triangles with a perimeter as small as we need it to be:
+
+-- We first define the ε-subtriangle and show that it is infact a subtriangle.
+-- Because of how it is constructed we'll then show that this subtriangle of T has a perimeter that is smaller than ε
 
 noncomputable def eps_subtriangle (z : ℂ) (hz : z ∈ (interior $ TriangularSet T))
   (ε : ℝ) (he : ε > 0) : SubTriangle T := {
@@ -135,3 +146,5 @@ lemma eps_subtriangle_apply (z : ℂ) (hz : z ∈ (interior $ TriangularSet T))
   exact (point_around_apply z hz).1
   norm_num
   apply sq_nonneg
+
+--So we have built a triangle that, contains z∈triangularSet T, is a subtriangle of T and has a perimeter of arbitrarily small size ε

@@ -7,12 +7,20 @@ open unitInterval Metric helpers.inequalities
 
 namespace definitions
 
+-- As it's been seen in the path file, UnitIntervalCovers are open sets in ℝ that contain the unit interval, in this file we
+-- define them and prove results on them
+
 structure UnitIntervalCover where
   set : Set ℝ
   h : IsOpen set ∧ I ⊆ set
 
+-- we add the coercion so that unitIntervalCovers can be used as sets of ℝ when needed
+
 instance : Coe UnitIntervalCover (Set ℝ) where
   coe := UnitIntervalCover.set
+
+-- we show that we can always find an open interval of the form (-a,a+1) such that the unit interval is contained in said interval
+-- and that our unit interval cover contains (-a,a+1)
 
 def UnitIntervalCover.interval_bounds (uic : UnitIntervalCover) : ∃ interval : Set ℝ, ∃ a : ℝ,
   I ⊆ Set.Ioo (-a) (a+1) ∧ Set.Ioo (-a) (a+1) ⊆ uic.set ∧ interval = Set.Ioo (-a) (a+1) := by

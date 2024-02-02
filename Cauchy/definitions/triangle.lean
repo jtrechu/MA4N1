@@ -11,24 +11,35 @@ open helpers Set
 
 namespace definitions
 
+-- In this file we define the triangles we'll be working with, to start with we define the triangle as its three vertices
+
 structure Triangle where
   a : ℂ
   b : ℂ
   c : ℂ
 
+-- We'll say a triangle is trivial if its vertices are the same
+
 def Trivial (triangle : Triangle) : Prop :=
   triangle.a = triangle.b ∧ triangle.b = triangle.c
+
+-- We say it's distinct if all vertices are different
 
 def Distinct (triangle : Triangle) : Prop :=
   triangle.a ≠ triangle.b ∧ triangle.b ≠ triangle.c ∧ triangle.c ≠ triangle.a
 
--- unsure about computability, but actually may not be on further reflection
+-- We'll now build triangles as paths. Triangles are the main reason we needed to define piece-wise paths
+-- as they are not differentiable on their vertices. However a triangles is always a piece wise path of
+-- its sides, which are linear paths of the vertices
+
 def Triangle.path (triangle : Triangle) : PiecewisePath 3 :=
   {
     paths := ![LinearPath.mk triangle.a triangle.b,
                LinearPath.mk triangle.b triangle.c,
                LinearPath.mk triangle.c triangle.a]
   }
+
+-- To later simplify readability we add this results that bring path Integrals and triangles together
 
 noncomputable def trianglePathIntegral (f : ℂ → ℂ) (T : Triangle) := pathIntegral1 f T.path
 
@@ -41,6 +52,10 @@ lemma trianglePathIntegral_apply (f : ℂ → ℂ) (T : Triangle) : trianglePath
   unfold Triangle.path PiecewisePath.paths
   aesop
 
+-- We now prove some basic properties of our triangles
+
+-- Firstly we define the perimeter, and show it is a non-negative number:
+
 noncomputable def perimeter (triangle : Triangle) : ℝ :=
   dist triangle.b triangle.a +
   dist triangle.c triangle.b +
@@ -51,10 +66,14 @@ lemma perimeter_nonneg (triangle : Triangle) : perimeter triangle ≥ 0 := by
   repeat apply add_nonneg
   all_goals apply dist_nonneg
 
+-- Now we define the set of points that conform the triangle:
+
 def TriangularSet (triangle : Triangle) : Set ℂ :=
   {z | ∃ (t₁ t₂ t₃ : ℝ), t₁ ≥ 0 ∧ t₂ ≥ 0 ∧ t₃ ≥ 0 ∧
     t₁ + t₂ + t₃ = 1 ∧
     (z = t₁*triangle.a + t₂*triangle.b + t₃*triangle.c) }
+
+-- We show that the vertices belong to the triangular set, and also that as a result of this the set is not empty
 
 def Triangle.contains_a (T : Triangle) : T.a ∈ TriangularSet T := by
   unfold TriangularSet
@@ -75,6 +94,8 @@ lemma Triangle.Nonempty (triangle : Triangle) : Set.Nonempty $ TriangularSet tri
   rewrite [Set.Nonempty]
   exact ⟨triangle.a, triangle.contains_a⟩
 
+-- We now define the boundary of our triangle and prove that it is contained in the triangular set:
+
 def TriangularBoundary (triangle : Triangle) : Set ℂ :=
   {z | ∃ (t₁ t₂ t₃ : ℝ), t₁ ≥ 0 ∧ t₂ ≥ 0 ∧ t₃ ≥ 0 ∧
     t₁ + t₂ + t₃ = 1 ∧ t₁*t₂*t₃ = 0 ∧
@@ -87,6 +108,8 @@ lemma boundary_in_set {T : Triangle} : TriangularBoundary T ⊆ TriangularSet T 
   have ⟨a, b, c, d, e, f, g, _, i⟩ := x
   exact ⟨a, b, c, d, e, f, g, i⟩
 
+-- Now we define the interior of the triangle and show that it is inside the set
+
 def TriangularInterior (triangle : Triangle) : Set ℂ :=
   {z | ∃ (t₁ t₂ t₃ : ℝ), t₁ > 0 ∧ t₂ > 0 ∧ t₃ > 0 ∧
     t₁ + t₂ + t₃ = 1 ∧ (z = t₁*triangle.a + t₂*triangle.b + t₃*triangle.c) }
@@ -97,6 +120,8 @@ def interior_in_set {T : Triangle} : TriangularInterior T ⊆ TriangularSet T :=
   simp at *
   have ⟨a, b, c, d, e, f, g, i⟩ := x
   exact ⟨a, le_of_lt b, c, le_of_lt d, e, le_of_lt f, g, i⟩
+
+-- Now we show that the triangular set is the union of interior and boundary
 
 lemma triangle_union (T : Triangle) :
   TriangularSet T = TriangularBoundary T ∪ TriangularInterior T := by
@@ -112,6 +137,8 @@ lemma triangle_union (T : Triangle) :
     exact ⟨a, b, c, Ne.lt_of_le (Ne.symm na) gtza, Ne.lt_of_le (Ne.symm nb) gtzb,
             Ne.lt_of_le (Ne.symm nc) gtzc, sum, defx⟩
   . exact Set.union_subset boundary_in_set interior_in_set
+
+--We now show that if a triangle is linearly independent then it is distinct
 
 def LinIndep (T : Triangle) : Prop :=
   LinearIndependent ℝ ![T.a-T.c, T.b-T.c]
