@@ -16,6 +16,9 @@ open definitions Fin
 
 namespace helpers
 
+-- This file includes a few results useful when working with 1,2,3-piece-wise paths so tu avoid having to deal with Σ and instead
+-- having the explicit sum, as well as the trivial result that any 0-piece-wise path gives us a 0 integral.
+
 lemma PiecewisePath.path_integral_empty (p : PiecewisePath 0) {f : ℂ → ℂ} : pathIntegral1 f p = 0 := by
   rfl
 

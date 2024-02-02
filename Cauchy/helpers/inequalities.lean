@@ -5,11 +5,18 @@ open unitInterval
 
 namespace helpers.inequalities
 
+-- This file contains several inequalities useful in several parts of the proof
+
+-- First we show that: the sum of products of non-negative reals is non-negative
+
 lemma gt_nonneg_sum_prod_3 (a A b B c C : ℝ) (ha : a ≥ 0) (hA : A ≥ 0)
   (hb : b ≥ 0) (hB : B ≥ 0) (hc : c ≥ 0) (hC : C ≥ 0) : a*A + b*B + c*C ≥ 0 := by
     repeat apply add_nonneg
     all_goals apply mul_nonneg
     all_goals assumption
+
+-- If an open interval contains a closed interval, the endpoints are respectivelly smaller and bigger
+-- for the open interval than for the closed interval
 
 lemma cover_lb_lt {a b c d : ℝ} (h : Set.Icc b c ⊆ Set.Ioo a d) (hh : b ≤ c) : a < b := by
   rewrite [Set.Ioo, Set.subset_def] at h
@@ -24,6 +31,11 @@ lemma cover_ub_gt {a b c d : ℝ} (h : Set.Icc b c ⊆ Set.Ioo a d) (hh : b ≤ 
   rewrite [Set.right_mem_Icc] at h
   have ⟨_, h⟩ := h hh
   exact h
+
+-- Now we prove that under the hypothesis we used to define linear transformations of paths
+-- the path is infact well-defined, so that the linear transformation applied on any point
+-- of the unit interval results in another point on the interval. We prove it for open intervals,
+-- which we'll be our open cover
 
 lemma bounded_transform_mem_cover {a b : ℝ} (scale : I) (hs : scale ≠ 0) (x : Set.Ioo a b)
   (h : I ⊆ Set.Ioo a b) (offset : ℝ) (ho : 0 ≤ offset) (hub : offset ≤ b * (1 - scale)) :
@@ -70,6 +82,9 @@ lemma reverse_mem_cover {a : ℝ} (x : Set.Ioo (-a) (a+1)) : (1:ℝ) - x ∈ Set
   simp only [Set.mem_Ioo] at hx ⊢
   constructor
   all_goals linarith
+
+-- We prove the following inequalities as they help with the bounds of the union of open and closed
+-- intervals, when one in contained in the other
 
 lemma union_bound_bound (a b c d x : ℝ)
   (hbc : c < b) (hbd : b ≤ d) (hac : a < c):

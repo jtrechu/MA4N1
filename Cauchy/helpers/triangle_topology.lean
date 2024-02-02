@@ -7,6 +7,9 @@ import Mathlib.Topology.Algebra.Module.FiniteDimension
 open definitions
 namespace helpers
 
+-- This file contains the auxiliary results needed for the proofs used on the file with the same name
+-- in the theorems folder
+
 lemma false_of_contradict {p : Prop} (h : p) (nh : ¬p) : False :=
   (and_not_self_iff p).1 ⟨h, nh⟩
 
